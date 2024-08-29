@@ -1,11 +1,11 @@
 import { get } from './base'
 
 export function getRecommend() {
-  return get('/use/api/getRecommend')
+  return get('/api/getRecommend')
 }
 
 export function getAlbum(albumId) {
-  return get('/use/api/getAlbum', {
+  return get('/api/getAlbum', {
     id: albumId
   })
 }

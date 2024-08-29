@@ -128,7 +128,7 @@ function registerRouter(app) {
 
 // 注册推荐列表接口路由
 function registerRecommend(app) {
-  app.get('/api/getRecommend', (req, res) => {
+  app.get('/getRecommend', (req, res) => {
     // 第三方服务接口 url
     const url = 'https://u.y.qq.com/cgi-bin/musics.fcg'
 
@@ -213,7 +213,7 @@ function registerRecommend(app) {
 
 // 注册歌手列表接口路由
 function registerSingerList(app) {
-  app.get('/api/getSingerList', (req, res) => {
+  app.get('/getSingerList', (req, res) => {
     const url = 'https://u.y.qq.com/cgi-bin/musics.fcg'
     const HOT_NAME = '热'
 
@@ -313,7 +313,7 @@ function registerSingerList(app) {
 
 // 注册歌手详情接口路由
 function registerSingerDetail(app) {
-  app.get('/api/getSingerDetail', (req, res) => {
+  app.get('/getSingerDetail', (req, res) => {
     const url = 'https://u.y.qq.com/cgi-bin/musics.fcg'
 
     const data = JSON.stringify({
@@ -355,7 +355,7 @@ function registerSingerDetail(app) {
 // 注册歌曲 url 获取接口路由
 // 因为歌曲的 url 每天都在变化，所以需要单独的接口根据歌曲的 mid 获取
 function registerSongsUrl(app) {
-  app.get('/api/getSongsUrl', (req, res) => {
+  app.get('/getSongsUrl', (req, res) => {
     const mid = req.query.mid
 
     let midGroup = []
@@ -434,7 +434,7 @@ function registerSongsUrl(app) {
 
 // 注册歌词接口
 function registerLyric(app) {
-  app.get('/api/getLyric', (req, res) => {
+  app.get('/getLyric', (req, res) => {
     const url = 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg'
 
     get(url, {
@@ -460,7 +460,7 @@ function registerLyric(app) {
 
 // 注册歌单专辑接口
 function registerAlbum(app) {
-  app.get('/api/getAlbum', (req, res) => {
+  app.get('/getAlbum', (req, res) => {
     const data = {
       req_0: {
         module: 'srf_diss_info.DissInfoServer',
@@ -505,7 +505,7 @@ function registerAlbum(app) {
 
 // 注册排行榜接口
 function registerTopList(app) {
-  app.get('/api/getTopList', (req, res) => {
+  app.get('/getTopList', (req, res) => {
     const url = 'https://u.y.qq.com/cgi-bin/musics.fcg'
 
     const data = JSON.stringify({
@@ -559,7 +559,7 @@ function registerTopList(app) {
 
 // 注册排行榜详情接口
 function registerTopDetail(app) {
-  app.get('/api/getTopDetail', (req, res) => {
+  app.get('/getTopDetail', (req, res) => {
     const url = 'https://u.y.qq.com/cgi-bin/musics.fcg'
     const { id, period } = req.query
 
@@ -608,7 +608,7 @@ function registerTopDetail(app) {
 
 // 注册热门搜索接口
 function registerHotKeys(app) {
-  app.get('/api/getHotKeys', (req, res) => {
+  app.get('/getHotKeys', (req, res) => {
     const url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
 
     const data = {
@@ -649,7 +649,7 @@ function registerHotKeys(app) {
 
 // 注册搜索查询接口
 function registerSearch(app) {
-  app.get('/api/search', (req, res) => {
+  app.get('/search', (req, res) => {
     const url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
 
     const { query, page, showSinger } = req.query
