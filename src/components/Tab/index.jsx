@@ -13,7 +13,7 @@ const tabs = [
   },
   {
     name: '排行',
-    path: '/top-list'
+    path: '/topList'
   },
   {
     name: '搜索',
