@@ -2,9 +2,10 @@
   "name": "react-music-quanji",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
+    "serve": "node server.js",
+    "start": "concurrently \"npm run dev\" \"node server.js\"",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -14,6 +15,8 @@
     "react-dom": "^18.3.1",
     "sass": "^1.77",
     "classnames": "^2.2.6",
+    "axios": "^0.21.1",
+    "axios-retry": "^3.1.9",
     "react-router-dom": "^6.26.1"
   },
   "devDependencies": {
@@ -27,6 +30,10 @@
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
     "prettier": "^3.3.3",
+    "express": "^4.19.2",
+    "js-base64": "^3.6.0",
+    "pinyin": "^2.9.1",
+    "concurrently": "^8.2.2",
     "vite": "^5.4.1"
   }
 }

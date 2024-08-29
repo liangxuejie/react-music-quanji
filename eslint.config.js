@@ -5,6 +5,11 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 
 export default [
+  {
+    env: {
+      node: true // node语法
+    },
+  },
   { ignores: ['dist'] },
   {
     files: ['**/*.{js,jsx}'],
