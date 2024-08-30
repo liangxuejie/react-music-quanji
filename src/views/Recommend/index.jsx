@@ -1,12 +1,18 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, lazy, Suspense } from 'react'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import { getRecommend } from '@/service/recommend'
 import useMountedState from '@/hooks/useMountedState'
+import ROUTES from '@/constants/routes'
 import Slider from '@/base/Slider'
 import Scroll from '@/base/Scroll'
+import storage from 'good-storage'
+import { ALBUM_KEY } from '@/assets/js/constant'
 import styles from './style.module.scss'
 
+const Album = lazy(() => import('@/views/Album'))
 const Recommend = () => {
   const isMounted = useMountedState()
+  const navigate = useNavigate()
   const [sliders, setSliders] = useState(null)
   const [albums, setAlbums] = useState(null)
 
@@ -23,6 +29,13 @@ const Recommend = () => {
   const loading = useMemo(() => {
     return !sliders?.length && !albums?.length
   }, [sliders?.length, albums?.length])
+  const selectItem = (album) => {
+    cacheAlbum(album)
+    navigate(`${ROUTES.RECOMMEND}/${album.id}`, { selectedAlbum: album})
+  }
+  const cacheAlbum = (album) => {
+    storage.session.set(ALBUM_KEY, album)
+  }
 
   return (
     <>
@@ -45,7 +58,7 @@ const Recommend = () => {
                       <li 
                       className={styles.item}
                       key={item.id}
-                      // @click="selectItem(item)"
+                      onClick={() => selectItem(item)}
                       >
                         <div className={styles.icon}>
                           <a href={item.link}>
@@ -67,6 +80,11 @@ const Recommend = () => {
               </div>
             </div>
           </Scroll>
+          <Suspense fallback={null}>
+            <Routes>
+              <Route path=":albumId" element={<Album/>} />
+            </Routes>
+          </Suspense>
         </div>
       )}
     </>

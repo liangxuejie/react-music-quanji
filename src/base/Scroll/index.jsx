@@ -17,14 +17,14 @@ const Scroll = ({children, click = true, probeType = 0, onScroll}) => {
     })
     if (probeType > 0) {
       scrollVal.on('scroll', (pos) => {
-        scroll && onScroll()
+        onScroll()
       })
     }
 
     return () => {
       scroll.current.destroy()
     }
-  }, [click, probeType])
+  }, [click, probeType, onScroll])
 
   return (
     <div className={styles.scrollContent} ref={(ref) => (rootRef.current = ref)}>
