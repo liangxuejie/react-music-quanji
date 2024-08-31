@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect, useMemo, useRef } from 'react'
 import SongList from '@/base/SongList'
+import Scroll from '@/base/Scroll'
 
 import styles from './style.module.scss'
 
@@ -10,6 +11,7 @@ const MusicList = ({title, songs = [], pic, loading, rank}) => {
   const bgImageRef = useRef(null)
   const imageHeight = useRef(0)
   const maxTranslateY = useRef(0)
+  const scrollY = useRef(0)
 
   useEffect(() => {
     imageHeight.current = bgImageRef.current.clientHeight
@@ -53,6 +55,9 @@ const MusicList = ({title, songs = [], pic, loading, rank}) => {
   const goBack = () => {
     navigate(-1)
   }
+  const onScroll = (pos) => {
+    scrollY.current = -pos.y
+  }
 
   return (
     <div className={styles.musicList}>
@@ -80,14 +85,13 @@ const MusicList = ({title, songs = [], pic, loading, rank}) => {
         </div>
       </div>
       { !loading && (
-        <div
-          className={styles.list}
-          style={scrollStyle}
-          // :style="scrollStyle"
+        <Scroll
+          classNameP={styles.list}
+          styleP={scrollStyle}
+          probeType={3}
+          onScroll={onScroll}
           // v-loading="props.loading"
           // v-no-result:[props.noResultText]="noResult"
-          // :probe-type="3"
-          // @scroll="onScroll"
         >
           <div className={styles.songListWrapper}>
             <SongList
@@ -96,7 +100,7 @@ const MusicList = ({title, songs = [], pic, loading, rank}) => {
               rank={rank}
             ></SongList>
           </div>
-        </div>
+        </Scroll>
       )}
     </div>
   )

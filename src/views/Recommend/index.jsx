@@ -41,7 +41,7 @@ const Recommend = () => {
     <>
       {!loading && (
         <div className={styles.recommend}>
-          <Scroll>
+          <Scroll classNameP={styles.recommendContent}>
             <div>
               <div className={styles.sliderWrapper}>
                 <div className={styles.sliderContent}>

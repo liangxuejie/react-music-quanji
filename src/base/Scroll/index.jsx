@@ -1,11 +1,10 @@
 import BScroll from '@better-scroll/core'
 import ObserveDOM from '@better-scroll/observe-dom'
 import { useEffect, useRef } from 'react'
-import styles from './style.module.scss'
 
 BScroll.use(ObserveDOM)
 
-const Scroll = ({children, click = true, probeType = 0, onScroll}) => {
+const Scroll = ({children, classNameP, styleP, click = true, probeType = 0, onScroll}) => {
   const rootRef = useRef(null)
   const scroll = useRef(null)
 
@@ -17,7 +16,7 @@ const Scroll = ({children, click = true, probeType = 0, onScroll}) => {
     })
     if (probeType > 0) {
       scrollVal.on('scroll', (pos) => {
-        onScroll()
+        onScroll(pos)
       })
     }
 
@@ -27,7 +26,7 @@ const Scroll = ({children, click = true, probeType = 0, onScroll}) => {
   }, [click, probeType, onScroll])
 
   return (
-    <div className={styles.scrollContent} ref={(ref) => (rootRef.current = ref)}>
+    <div className={classNameP} style={styleP} ref={(ref) => (rootRef.current = ref)}>
       {children}
     </div>
   )
