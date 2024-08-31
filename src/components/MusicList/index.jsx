@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom'
 import { useState, useEffect, useMemo, useRef } from 'react'
 import SongList from '@/base/SongList'
 import Scroll from '@/base/Scroll'
-
 import styles from './style.module.scss'
 
 const RESERVED_HEIGHT = 40
@@ -11,38 +10,56 @@ const MusicList = ({title, songs = [], pic, loading, rank}) => {
   const bgImageRef = useRef(null)
   const imageHeight = useRef(0)
   const maxTranslateY = useRef(0)
-  const scrollY = useRef(0)
+  const [scrollY, setScrollY] = useState(0)
 
   useEffect(() => {
     imageHeight.current = bgImageRef.current.clientHeight
     maxTranslateY.current = imageHeight.current - RESERVED_HEIGHT 
   }, [])
   const bgImageStyle = useMemo(() => {
-    // const scrollY = state.scrollY
+    const scrollYC = scrollY
     let zIndex = 0
     let paddingTop = '70%'
     let height = 0
-    // let translateZ = 0
+    let translateZ = 0
 
-    // if (scrollY > state.maxTranslateY) {
-    //   zIndex = 10
-    //   paddingTop = 0
-    //   height = `${RESERVED_HEIGHT}px`
-    //   translateZ = 1
-    // }
+    if (scrollYC > maxTranslateY.current) {
+      zIndex = 10
+      paddingTop = 0
+      height = `${RESERVED_HEIGHT}px`
+      translateZ = 1
+    }
 
-    // let scale = 1
-    // if (scrollY < 0) {
-    //   scale = 1 + Math.abs(scrollY / state.imageHeight)
-    // }
+    let scale = 1
+    if (scrollYC < 0) {
+      scale = 1 + Math.abs(scrollYC / imageHeight.current)
+    }
     return {
       zIndex,
       paddingTop,
       height,
       backgroundImage: `url(${pic})`,
-      // transform: `scale(${scale})translateZ(${translateZ}px)`
+      transform: `scale(${scale})translateZ(${translateZ}px)`
     }
-  }, [pic])
+  }, [scrollY])
+  const playBtnStyle = useMemo(() => {
+    let display = ''
+    if (scrollY >= maxTranslateY.current) {
+      display = 'none'
+    }
+    return {
+      display
+    }
+  }, [scrollY])
+  const filterStyle = useMemo(() => {
+    let blur = 0
+    if (scrollY >= 0) {
+      blur = Math.min(maxTranslateY.current / imageHeight.current, scrollY / imageHeight.current) * 20
+    }
+    return {
+      backdropFilter: `blur(${blur}px)`
+    }
+  }, [scrollY])
   const scrollStyle = useMemo(() => {
     // const bottom = this.playlist.length ? '60px' : '0'
     const bottom = '0'
@@ -56,7 +73,7 @@ const MusicList = ({title, songs = [], pic, loading, rank}) => {
     navigate(-1)
   }
   const onScroll = (pos) => {
-    scrollY.current = -pos.y
+    setScrollY(-pos.y)
   }
 
   return (
@@ -66,9 +83,7 @@ const MusicList = ({title, songs = [], pic, loading, rank}) => {
       </div>
       <h1 className={styles.title}>{title}</h1>
       <div className={styles.bgImage} style={bgImageStyle} ref={(ref) => (bgImageRef.current = ref)}>
-        <div className={styles.playBtnWrapper}
-          // :style="playBtnStyle"
-        >
+        <div className={styles.playBtnWrapper} style={playBtnStyle}>
           {songs.length > 0 && (
             <div className={styles.playBtn}
               // onClick={random}
@@ -78,9 +93,7 @@ const MusicList = ({title, songs = [], pic, loading, rank}) => {
             </div>
           )}
         </div>
-        <div className={styles.filter}
-          // :style="filterStyle"
-        >
+        <div className={styles.filter} style={filterStyle}>
           <i className={styles.iconBack}></i>
         </div>
       </div>

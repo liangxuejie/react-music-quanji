@@ -23,7 +23,7 @@ const Scroll = ({children, classNameP, styleP, click = true, probeType = 0, onSc
     return () => {
       scroll.current.destroy()
     }
-  }, [click, probeType, onScroll])
+  }, [])
 
   return (
     <div className={classNameP} style={styleP} ref={(ref) => (rootRef.current = ref)}>
