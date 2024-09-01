@@ -1,4 +1,4 @@
-import MusicListWrap from '@/components/MusicListWrap'
+import MusicListWrap from '@/components/MusicListWrap/MusicListWrap'
 import { useLocation } from "react-router-dom"
 import { ALBUM_KEY } from '@/assets/js/constant'
 import { getAlbum } from '@/service/recommend'

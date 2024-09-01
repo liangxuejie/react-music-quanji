@@ -1,4 +1,4 @@
-import MusicList from '@/components/MusicList'
+import MusicList from '@/components/MusicList/MusicList'
 import { useState, useEffect, useMemo} from 'react'
 import storage from 'good-storage'
 import { useParams, useMatches, useNavigate } from 'react-router-dom'

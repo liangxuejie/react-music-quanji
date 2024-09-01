@@ -1,16 +1,16 @@
 import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import ROUTES from '@/constants/routes'
-import Header from '@/components/Header'
-import Tab from '@/components/Tab'
+import Header from '@/components/Header/Header'
+import Tab from '@/components/Tab/Tab'
 import playMusicReducer, { initialState, PlayMusicStateContext, PlayMusicDispatchContext } from '@/reducers/playMusic'
 
 const { lazy, Suspense, useReducer } = React
-const Recommend = lazy(() => import('@/views/Recommend'))
-const Singer = lazy(() => import('@/views/Singer'))
-const TopList = lazy(() => import('@/views/TopList'))
-const Search = lazy(() => import('@/views/Search'))
-const UserCenter = lazy(() => import('@/views/UserCenter'))
+const Recommend = lazy(() => import('@/views/Recommend/Recommend'))
+const Singer = lazy(() => import('@/views/Singer/Singer'))
+const TopList = lazy(() => import('@/views/TopList/TopList'))
+const Search = lazy(() => import('@/views/Search/Search'))
+const UserCenter = lazy(() => import('@/views/UserCenter/UserCenter'))
 
 function App() {
   const [playState, playDispath] = useReducer(playMusicReducer, initialState)

@@ -3,13 +3,13 @@ import { Routes, Route, useNavigate } from 'react-router-dom'
 import { getRecommend } from '@/service/recommend'
 import useMountedState from '@/hooks/useMountedState'
 import ROUTES from '@/constants/routes'
-import Slider from '@/base/Slider'
-import Scroll from '@/base/Scroll'
+import Slider from '@/base/Slider/Slider'
+import Scroll from '@/base/Scroll/Scroll'
 import storage from 'good-storage'
 import { ALBUM_KEY } from '@/assets/js/constant'
 import styles from './style.module.scss'
 
-const Album = lazy(() => import('@/views/Album'))
+const Album = lazy(() => import('@/views/Album/Album'))
 const Recommend = () => {
   const isMounted = useMountedState()
   const navigate = useNavigate()

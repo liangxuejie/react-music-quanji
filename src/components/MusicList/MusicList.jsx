@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect, useMemo, useRef } from 'react'
-import SongList from '@/base/SongList'
-import Scroll from '@/base/Scroll'
+import SongList from '@/base/SongList/SongList'
+import Scroll from '@/base/Scroll/Scroll'
 import styles from './style.module.scss'
 
 const RESERVED_HEIGHT = 40
