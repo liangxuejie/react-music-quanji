@@ -1,6 +1,6 @@
 import styles from './style.module.scss'
 
-const SongList = ({songs, rank}) => {
+const SongList = ({songs, rank, selectItem}) => {
 
   const getDesc = (song) => {
     return `${song.singer}·${song.album}`
@@ -13,7 +13,7 @@ const SongList = ({songs, rank}) => {
           <li 
           className={styles.item}
           key={song.id}
-          // onClick={() => selectItem(song, index)}
+          onClick={() => selectItem(song, index)}
           >
             {rank && (
               <div className={styles.rank}>

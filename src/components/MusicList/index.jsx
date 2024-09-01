@@ -75,6 +75,12 @@ const MusicList = ({title, songs = [], pic, loading, rank}) => {
   const onScroll = (pos) => {
     setScrollY(-pos.y)
   }
+  const selectItem = ({ song, index }) => {
+    // this.selectPlay({
+    //   list: props.songs,
+    //   index
+    // })
+  }
 
   return (
     <div className={styles.musicList}>
@@ -109,7 +115,7 @@ const MusicList = ({title, songs = [], pic, loading, rank}) => {
           <div className={styles.songListWrapper}>
             <SongList
               songs={songs}
-              // @select="selectItem"
+              selectItem={selectItem}
               rank={rank}
             ></SongList>
           </div>
