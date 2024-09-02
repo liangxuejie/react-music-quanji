@@ -13,7 +13,17 @@ const MusicList = ({title, songs, pic, loading, rank}) => {
   const maxTranslateY = useRef(0)
   const [scrollY, setScrollY] = useState(0)
   const playDispath = useContext(PlayMusicDispatchContext)
-
+  
+  // 方便开发页面
+  // useEffect(() => {
+  //   playDispath({
+  //     type: ACTIONS.SELECT_PLAY,
+  //     payload: {
+  //       list: songs,
+  //       index: 1,
+  //     },
+  //   })
+  // }, [songs])
   useEffect(() => {
     imageHeight.current = bgImageRef.current.clientHeight
     maxTranslateY.current = imageHeight.current - RESERVED_HEIGHT 

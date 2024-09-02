@@ -208,6 +208,9 @@
           .IconRandom:before {
             content: "\e910";
           }
+          .IconPrev:before {
+            content: "\e90d";
+          }
         }
         .iconCenter {
           padding: 0 20px;
@@ -215,12 +218,27 @@
           i {
             font-size: 40px;
           }
+          .IconPause:before {
+            content: "\e90b";
+          }
+          .IconPlay:before {
+            content: "\e90c";
+          }
         }
         .iconRight {
-          text-align: left
+          text-align: left;
+          .IconNext:before {
+            content: "\e913";
+          }
         }
-        .iconFavorite {
+        .IconFavorite {
           color: $color-sub-theme;
+        }
+        .IconFavorite:before {
+          content: "\e909";
+        }
+        .IconNotFavorite:before {
+          content: "\e90a";
         }
       }
     }

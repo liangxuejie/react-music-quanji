@@ -6,11 +6,14 @@ const SELECT_PLAY = 'SELECT_PLAY'
 const RANDOM_PLAY = 'RANDOM_PLAY'
 const SET_FULL_SCREEN = 'SET_FULL_SCREEN'
 const SET_PLAY_MODE = 'SET_PLAY_MODE'
+const SET_PLAYING_STATE = 'SET_PLAYING_STATE'
 
 export const ACTIONS = {
   SELECT_PLAY,
   RANDOM_PLAY,
   SET_FULL_SCREEN,
+  SET_PLAY_MODE,
+  SET_PLAYING_STATE,
 }
 export const initialState = {
   sequenceList: [],
@@ -56,6 +59,12 @@ const playMusicReducer = (state, { type, payload }) => {
       return {
         ...state,
         playMode: payload.playMode,
+      }
+    }
+    case ACTIONS.SET_PLAYING_STATE: {
+      return {
+        ...state,
+        playingState: payload.playingState,
       }
     }
     default:
