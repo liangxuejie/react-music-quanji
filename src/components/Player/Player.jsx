@@ -6,10 +6,11 @@ import useMode from './useMode'
 import styles from './style.module.scss'
 
 const Player = () => {
-  const {playlist, currentIndex, fullScreen, playingState} = useContext(PlayMusicStateContext)
+  const { playlist, currentIndex, fullScreen, playingState, playMode } = useContext(PlayMusicStateContext)
   const playDispath = useContext(PlayMusicDispatchContext)
   const { modeIcon, changeMode } = useMode()
   const audioRef = useRef(null)
+  const progressChanging = useRef(false)
 
   const [currentTime, setCurrentTime] = useState(0)
   const [songReady, setSongReady] = useState(0)
@@ -40,6 +41,19 @@ const Player = () => {
       },
     })
   }, [currentSong])
+  useEffect(() => {
+    if (!songReady) {
+      return
+    }
+    const audioEl = audioRef.current
+    if (playingState) {
+      audioEl.play()
+      // playLyric()
+    } else {
+      audioEl.pause()
+      // stopLyric()
+    }
+  }, [playingState])
 
   function goBack() {
     playDispath({
@@ -62,16 +76,93 @@ const Player = () => {
       },
     })
   }
+  function pause() {
+    playDispath({
+      type: ACTIONS.SET_PLAYING_STATE,
+      payload: {
+        playingState: false,
+      },
+    })
+  }
+  function error() {
+    setSongReady(true)
+  }
+  function updateTime(e) {
+    if (!progressChanging.current) {
+      setCurrentTime(e.target.currentTime)
+    }
+  }
+  function end() {
+    setCurrentTime(0)
+    if (playMode === PLAY_MODE.loop) {
+      loop()
+    } else {
+      next()
+    }
+  }
+  function prev() {
+    const list = playlist
+    if (!songReady || !list.length) {
+      return
+    }
+
+    if (list.length === 1) {
+      loop()
+    } else {
+      let index = currentIndex - 1
+      if (index === -1) {
+        index = list.length - 1
+      }
+      playDispath({
+        type: ACTIONS.SET_CURRENT_INDEX,
+        payload: {
+          currentIndex: index,
+        },
+      })
+    }
+  }
+  function next() {
+    const list = playlist
+    if (!songReady || !list.length) {
+      return
+    }
+
+    if (list.length === 1) {
+      loop()
+    } else {
+      let index = currentIndex + 1
+      if (index === list.length) {
+        index = 0
+      }
+      playDispath({
+        type: ACTIONS.SET_CURRENT_INDEX,
+        payload: {
+          currentIndex: index,
+        },
+      })
+    }
+  }
+  function loop() {
+    const audioEl = audioRef.current
+    audioEl.currentTime = 0
+    audioEl.play()
+    playDispath({
+      type: ACTIONS.SET_PLAYING_STATE,
+      payload: {
+        playingState: true,
+      },
+    })
+  }
   function ready() {
     if (songReady) {
       return
     }
     setSongReady(true)
     // playLyric()
-    // savePlay(currentSong.value)
+    // savePlay(currentSong)
   }
 
-  // console.log('playingState', playingState)
+  console.log('playingState', playingState)
   return (
     <>
       {playlist.length > 0 && (
@@ -149,7 +240,7 @@ const Player = () => {
                     <i onClick={togglePlay} className={playIcon}></i>
                   </div>
                   <div className={cn(styles.icon, styles.iconRight, disableCls)}>
-                    <i onClick={prev} className={styles.IconNext}></i>
+                    <i onClick={next} className={styles.IconNext}></i>
                   </div>
                   <div className={cn(styles.icon, styles.iconRight, disableCls)}>
                     <i onClick={prev} className={styles.IconFavorite}></i>
@@ -161,10 +252,10 @@ const Player = () => {
           <audio
             ref={(ref) => (audioRef.current = ref)}
             onCanPlay={ready}
-            // @pause="pause"
-            // @error="error"
-            // @timeupdate="updateTime"
-            // @ended="end"
+            onPause={pause}
+            onError={error}
+            onTimeUpdate={updateTime}
+            onEnded={end}
           ></audio>
         </div>
       )}

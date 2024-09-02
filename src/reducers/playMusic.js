@@ -7,6 +7,7 @@ const RANDOM_PLAY = 'RANDOM_PLAY'
 const SET_FULL_SCREEN = 'SET_FULL_SCREEN'
 const SET_PLAY_MODE = 'SET_PLAY_MODE'
 const SET_PLAYING_STATE = 'SET_PLAYING_STATE'
+const SET_CURRENT_INDEX = 'SET_CURRENT_INDEX'
 
 export const ACTIONS = {
   SELECT_PLAY,
@@ -14,6 +15,7 @@ export const ACTIONS = {
   SET_FULL_SCREEN,
   SET_PLAY_MODE,
   SET_PLAYING_STATE,
+  SET_CURRENT_INDEX,
 }
 export const initialState = {
   sequenceList: [],
@@ -65,6 +67,12 @@ const playMusicReducer = (state, { type, payload }) => {
       return {
         ...state,
         playingState: payload.playingState,
+      }
+    }
+    case ACTIONS.SET_CURRENT_INDEX: {
+      return {
+        ...state,
+        currentIndex: payload.currentIndex,
       }
     }
     default:
