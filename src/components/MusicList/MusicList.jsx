@@ -71,13 +71,13 @@ const MusicList = ({title, songs, pic, loading, rank}) => {
     }
   }, [imageHeight.current])
 
-  const goBack = () => {
+  function goBack() {
     navigate(-1)
   }
-  const onScroll = (pos) => {
+  function onScroll(pos) {
     setScrollY(-pos.y)
   }
-  const selectItem = ({song, index}) => {
+  function selectItem({song, index}) {
     playDispath({
       type: ACTIONS.SELECT_PLAY,
       payload: {
@@ -86,7 +86,7 @@ const MusicList = ({title, songs, pic, loading, rank}) => {
       },
     })
   }
-  const random = () => {
+  function random() {
     playDispath({
       type: ACTIONS.RANDOM_PLAY,
       payload: {

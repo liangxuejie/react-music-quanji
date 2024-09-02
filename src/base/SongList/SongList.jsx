@@ -2,7 +2,7 @@ import styles from './style.module.scss'
 
 const SongList = ({songs, rank, selectItem}) => {
 
-  const getDesc = (song) => {
+  function getDesc(song) {
     return `${song.singer}·${song.album}`
   }
 

@@ -29,11 +29,11 @@ const Recommend = () => {
   const loading = useMemo(() => {
     return !sliders?.length && !albums?.length
   }, [sliders?.length, albums?.length])
-  const selectItem = (album) => {
+  function selectItem(album) {
     cacheAlbum(album)
     navigate(`${ROUTES.RECOMMEND}/${album.id}`, {state: { selectedAlbum: album}})
   }
-  const cacheAlbum = (album) => {
+  function cacheAlbum(album) {
     storage.session.set(ALBUM_KEY, album)
   }
 

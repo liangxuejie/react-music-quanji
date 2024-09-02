@@ -14,7 +14,7 @@ const Player = () => {
     return playlist[currentIndex]
   }, [playlist, currentIndex])
 
-  const goBack = () => {
+  function goBack() {
     playDispath({
       type: ACTIONS.SET_FULL_SCREEN,
       payload: {
