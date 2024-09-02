@@ -13,7 +13,7 @@ const SongList = ({songs, rank, selectItem}) => {
           <li 
           className={styles.item}
           key={song.id}
-          onClick={() => selectItem(song, index)}
+          onClick={() => selectItem({song, index})}
           >
             {rank && (
               <div className={styles.rank}>

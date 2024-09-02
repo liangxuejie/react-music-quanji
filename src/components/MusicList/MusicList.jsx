@@ -1,16 +1,18 @@
 import { useNavigate } from 'react-router-dom'
-import { useState, useEffect, useMemo, useRef } from 'react'
+import { useState, useEffect, useMemo, useRef, useContext } from 'react'
 import SongList from '@/base/SongList/SongList'
 import Scroll from '@/base/Scroll/Scroll'
+import { PlayMusicDispatchContext, ACTIONS } from '@/reducers/playMusic'
 import styles from './style.module.scss'
 
 const RESERVED_HEIGHT = 40
-const MusicList = ({title, songs = [], pic, loading, rank}) => {
+const MusicList = ({title, songs, pic, loading, rank}) => {
   const navigate = useNavigate()
   const bgImageRef = useRef(null)
   const imageHeight = useRef(0)
   const maxTranslateY = useRef(0)
   const [scrollY, setScrollY] = useState(0)
+  const playDispath = useContext(PlayMusicDispatchContext)
 
   useEffect(() => {
     imageHeight.current = bgImageRef.current.clientHeight
@@ -41,7 +43,7 @@ const MusicList = ({title, songs = [], pic, loading, rank}) => {
       backgroundImage: `url(${pic})`,
       transform: `scale(${scale})translateZ(${translateZ}px)`
     }
-  }, [scrollY])
+  }, [scrollY, maxTranslateY.current, imageHeight.current, pic])
   const playBtnStyle = useMemo(() => {
     let display = ''
     if (scrollY >= maxTranslateY.current) {
@@ -50,7 +52,7 @@ const MusicList = ({title, songs = [], pic, loading, rank}) => {
     return {
       display
     }
-  }, [scrollY])
+  }, [scrollY, maxTranslateY.current])
   const filterStyle = useMemo(() => {
     let blur = 0
     if (scrollY >= 0) {
@@ -59,7 +61,7 @@ const MusicList = ({title, songs = [], pic, loading, rank}) => {
     return {
       backdropFilter: `blur(${blur}px)`
     }
-  }, [scrollY])
+  }, [scrollY, maxTranslateY.current, imageHeight.current])
   const scrollStyle = useMemo(() => {
     // const bottom = this.playlist.length ? '60px' : '0'
     const bottom = '0'
@@ -75,11 +77,22 @@ const MusicList = ({title, songs = [], pic, loading, rank}) => {
   const onScroll = (pos) => {
     setScrollY(-pos.y)
   }
-  const selectItem = ({ song, index }) => {
-    // this.selectPlay({
-    //   list: props.songs,
-    //   index
-    // })
+  const selectItem = ({song, index}) => {
+    playDispath({
+      type: ACTIONS.SELECT_PLAY,
+      payload: {
+        list: songs,
+        index,
+      },
+    })
+  }
+  const random = () => {
+    playDispath({
+      type: ACTIONS.RANDOM_PLAY,
+      payload: {
+        list: songs,
+      },
+    })
   }
 
   return (
@@ -91,9 +104,7 @@ const MusicList = ({title, songs = [], pic, loading, rank}) => {
       <div className={styles.bgImage} style={bgImageStyle} ref={(ref) => (bgImageRef.current = ref)}>
         <div className={styles.playBtnWrapper} style={playBtnStyle}>
           {songs.length > 0 && (
-            <div className={styles.playBtn}
-              // onClick={random}
-              >
+            <div className={styles.playBtn} onClick={random}>
               <i className={styles.iconPlay}></i>
               <span className={styles.text}>随机播放全部</span>
             </div>

@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import ROUTES from '@/constants/routes'
 import Header from '@/components/Header/Header'
 import Tab from '@/components/Tab/Tab'
+import Player from '@/components/Player/Player'
 import playMusicReducer, { initialState, PlayMusicStateContext, PlayMusicDispatchContext } from '@/reducers/playMusic'
 
 const { lazy, Suspense, useReducer } = React
@@ -31,7 +32,8 @@ function App() {
               <Route path={ROUTES.ROOT} element={<Navigate to={ROUTES.DEFAULT_ROUTE} />} />
               {/* <Route path="*" element={<Navigate to={ROUTES.ROOT} />} /> */}
             </Routes>
-          </Suspense>  
+          </Suspense>
+          <Player></Player>
         </PlayMusicStateContext.Provider>
       </PlayMusicDispatchContext.Provider>
     </>

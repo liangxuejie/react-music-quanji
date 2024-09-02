@@ -1,5 +1,6 @@
 import React from 'react'
 import { PLAY_MODE } from '@/assets/js/constant'
+import { shuffle } from '@/assets/js/util'
 
 const SELECT_PLAY = 'SELECT_PLAY'
 const RANDOM_PLAY = 'RANDOM_PLAY'
