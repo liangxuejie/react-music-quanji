@@ -4,9 +4,13 @@ import { shuffle } from '@/assets/js/util'
 
 const SELECT_PLAY = 'SELECT_PLAY'
 const RANDOM_PLAY = 'RANDOM_PLAY'
+const SET_FULL_SCREEN = 'SET_FULL_SCREEN'
+const SET_PLAY_MODE = 'SET_PLAY_MODE'
+
 export const ACTIONS = {
   SELECT_PLAY,
   RANDOM_PLAY,
+  SET_FULL_SCREEN,
 }
 export const initialState = {
   sequenceList: [],
@@ -40,6 +44,18 @@ const playMusicReducer = (state, { type, payload }) => {
         fullScreen: true,
         playlist: shuffle(payload.list),
         currentIndex: 0,
+      }
+    }
+    case ACTIONS.SET_FULL_SCREEN: {
+      return {
+        ...state,
+        fullScreen: payload.fullScreen,
+      }
+    }
+    case ACTIONS.SET_PLAY_MODE: {
+      return {
+        ...state,
+        playMode: payload.playMode,
       }
     }
     default:
