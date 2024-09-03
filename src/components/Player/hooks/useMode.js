@@ -1,7 +1,7 @@
 import { useMemo, useContext } from 'react'
 import { PlayMusicStateContext, PlayMusicDispatchContext, ACTIONS } from '@/reducers/playMusic'
 import { PLAY_MODE } from '@/assets/js/constant'
-import styles from './style.module.scss'
+import styles from '../style.module.scss'
 
 export default function useMode() {
   const {playMode} = useContext(PlayMusicStateContext)

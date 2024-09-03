@@ -1,10 +1,12 @@
 import { useState, useEffect, useMemo, useRef, useContext } from 'react'
 import { PlayMusicStateContext, PlayMusicDispatchContext, ACTIONS } from '@/reducers/playMusic'
+import { formatTime } from '@/assets/js/util'
 import cn from 'classnames'
-import ProgressBar from './ProgressBar/ProgressBar'
 
-import useMode from './useMode'
-import useCd from './useCd'
+import ProgressBar from './ProgressBar/ProgressBar'
+import useMode from './hooks/useMode'
+import useCd from './hooks/useCd'
+import useMiddleInteractive from './hooks/useMiddleInteractive'
 
 import styles from './style.module.scss'
 
@@ -13,6 +15,7 @@ const Player = () => {
   const playDispath = useContext(PlayMusicDispatchContext)
   const { modeIcon, changeMode } = useMode()
   const { cdCls, cdRef, cdImageRef } = useCd()
+  const { currentShow, middleLStyle, middleRStyle, onMiddleTouchStart, onMiddleTouchMove, onMiddleTouchEnd } = useMiddleInteractive()
 
   const audioRef = useRef(null)
   const barRef = useRef(null)
@@ -216,11 +219,11 @@ const Player = () => {
                 <h2 className={styles.subtitle}>{currentSong.singer}</h2>
               </div>
               <div className={styles.middle}
-                        // @touchstart.prevent="onMiddleTouchStart"
-                        // @touchmove.prevent="onMiddleTouchMove"
-                        // @touchend.prevent="onMiddleTouchEnd"
+                   onTouchStart={onMiddleTouchStart}
+                   onTouchMove={onMiddleTouchMove}
+                   onTouchEnd={onMiddleTouchEnd}
               >
-                <div className={styles.middleLeft}>
+                <div className={styles.middleLeft} style={middleLStyle}>
                   <div className={styles.cdWrapper}
                     // ref="cdWrapperRef"
                   >
@@ -233,23 +236,17 @@ const Player = () => {
                   </div>
                 </div>
 
-                <div className={styles.middleRight}>
-                  {/* <div className={styles.back} onClick={goBack}>
-                    <i className={styles.IconBack}></i>
-                  </div>
-                  <h1 className={styles.title}>{currentSong.name}</h1>
-                  <h2 className={styles.subtitle}>{currentSong.singer}</h2> */}
+                <div className={styles.middleRight} style={middleRStyle}>
+                  middleRight
                 </div>
               </div>
               <div className={styles.bottom}>
                 <div className={styles.dotWrapper}>
-                  <span className={styles.dot}></span>
-                  <span className={styles.dot}></span>
-                  {/* <span class="dot" :class="{'active':currentShow==='cd'}"></span>
-                  <span class="dot" :class="{'active':currentShow==='lyric'}"></span> */}
+                  <span className={currentShow==='cd' ? cn(styles.dot, styles.active) : styles.dot}></span>
+                  <span className={currentShow==='lyric' ? cn(styles.dot, styles.active) : styles.dot}></span>
                 </div>
                 <div className={styles.progressWrapper}>
-                  <span src={cn(styles.time, styles.timeLeft)}></span>
+                  <span className={cn(styles.time, styles.timeLeft)}>{formatTime(currentTime)}</span>
                   <div className={styles.progressBarWrapper}>
                     <ProgressBar
                       // ref={(ref) => (barRef.current = ref)}
@@ -258,7 +255,7 @@ const Player = () => {
                       onProgressChanging={onProgressChanging}
                     ></ProgressBar>
                   </div>
-                  <span src={cn(styles.time, styles.timeRight)}></span>
+                  <span className={cn(styles.time, styles.timeRight)}>{formatTime(currentSong?.duration)}</span>
                 </div>
                 <div className={styles.operators}>
                   <div className={cn(styles.icon, styles.iconLeft)}>

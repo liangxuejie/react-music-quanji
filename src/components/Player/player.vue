@@ -58,6 +58,7 @@
               <div class="playing-lyric">{{playingLyric}}</div>
             </div>
           </div>
+          
           <scroll
             class="middle-r"
             ref="lyricScrollRef"

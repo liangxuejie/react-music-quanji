@@ -1,6 +1,6 @@
 import { useRef, useContext, useMemo, useEffect } from 'react'
 import { PlayMusicStateContext } from '@/reducers/playMusic'
-import styles from './style.module.scss'
+import styles from '../style.module.scss'
 
 export default function useCd() {
   const cdRef = useRef(null)
