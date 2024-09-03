@@ -4,6 +4,7 @@ import cn from 'classnames'
 import ProgressBar from './ProgressBar/ProgressBar'
 
 import useMode from './useMode'
+import useCd from './useCd'
 
 import styles from './style.module.scss'
 
@@ -11,7 +12,10 @@ const Player = () => {
   const { playlist, currentIndex, fullScreen, playingState, playMode } = useContext(PlayMusicStateContext)
   const playDispath = useContext(PlayMusicDispatchContext)
   const { modeIcon, changeMode } = useMode()
+  const { cdCls, cdRef, cdImageRef } = useCd()
+
   const audioRef = useRef(null)
+  const barRef = useRef(null)
   const progressChanging = useRef(false)
 
   const [currentTime, setCurrentTime] = useState(0)
@@ -59,6 +63,11 @@ const Player = () => {
       // stopLyric()
     }
   }, [playingState])
+  useEffect(() => {
+    if (fullScreen) {
+      // barRef.current.setOffsetFn(progressPercent)
+    }
+  }, [fullScreen])
 
   function goBack() {
     playDispath({
@@ -215,13 +224,8 @@ const Player = () => {
                   <div className={styles.cdWrapper}
                     // ref="cdWrapperRef"
                   >
-                    <div className={styles.cd}
-                      // ref="cdRef"
-                    >
-                      <img className={styles.image} src={currentSong.pic}
-                        // ref="cdImageRef"
-                        // :class="cdCls"                   
-                      ></img>
+                    <div className={styles.cd} ref={(ref) => (cdRef.current = ref)}>
+                      <img className={cn(styles.image, cdCls)} src={currentSong.pic} ref={(ref) => (cdImageRef.current = ref)}></img>
                     </div>
                   </div>
                   <div className={styles.playingLyricWrapper}>
@@ -248,7 +252,7 @@ const Player = () => {
                   <span src={cn(styles.time, styles.timeLeft)}></span>
                   <div className={styles.progressBarWrapper}>
                     <ProgressBar
-                      // ref="barRef"
+                      // ref={(ref) => (barRef.current = ref)}
                       progressPercent={progressPercent}
                       onProgressChanged={onProgressChanged}
                       onProgressChanging={onProgressChanging}

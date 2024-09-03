@@ -20,10 +20,10 @@ const ProgressBar = ({progressPercent = 0, onProgressChanged, onProgressChanging
   }, [offset])
 
   useEffect(() => {
-    getOffset(progressPercent)
+    setOffsetFn(progressPercent)
   }, [progressPercent])
 
-  function getOffset(progressPercent) {
+  function setOffsetFn(progressPercent) {
     const barWidth = progressBarRef.current.clientWidth - progressBtnWidth
     setOffset(barWidth * progressPercent)
   }
