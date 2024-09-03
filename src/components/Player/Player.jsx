@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo, useRef, useContext } from 'react'
 import { PlayMusicStateContext, PlayMusicDispatchContext, ACTIONS } from '@/reducers/playMusic'
 import cn from 'classnames'
+import ProgressBar from './ProgressBar/ProgressBar'
+
 import useMode from './useMode'
 
 import styles from './style.module.scss'
@@ -24,6 +26,9 @@ const Player = () => {
   const playIcon = useMemo(() => {
     return playingState ? styles.IconPause : styles.IconPlay
   }, [playingState])
+  const progressPercent = useMemo(() => {
+    return currentTime / currentSong?.duration
+  }, [currentTime, currentSong])
 
   useEffect(() => {
     if (!currentSong?.id || !currentSong?.url) {
@@ -62,8 +67,6 @@ const Player = () => {
         fullScreen: false,
       },
     })
-  }
-  function prev() {
   }
   function togglePlay() {
     if (!songReady) {
@@ -161,6 +164,30 @@ const Player = () => {
     // playLyric()
     // savePlay(currentSong)
   }
+  function toggleFavorite() {
+  }
+  function onProgressChanged(progressPer) {
+    progressChanging.current = false
+    const curTime = currentSong?.duration * progressPer
+    setCurrentTime(curTime)
+    audioRef.current.currentTime = curTime
+    if (!playingState) {
+      playDispath({
+        type: ACTIONS.SET_PLAYING_STATE,
+        payload: {
+          playingState: true,
+        },
+      })
+    }
+    // playLyric()
+  }
+  function onProgressChanging(progressPer) {
+    progressChanging.current = true
+    const curTime = currentSong?.duration * progressPer
+    setCurrentTime(curTime)
+    // playLyric()
+    // stopLyric()
+  }
 
   console.log('playingState', playingState)
   return (
@@ -220,12 +247,12 @@ const Player = () => {
                 <div className={styles.progressWrapper}>
                   <span src={cn(styles.time, styles.timeLeft)}></span>
                   <div className={styles.progressBarWrapper}>
-                    {/* <progress-bar
-                      ref="barRef"
-                      :progress="progress"
-                      @progress-changing="onProgressChanging"
-                      @progress-changed="onProgressChanged"
-                    ></progress-bar> */}
+                    <ProgressBar
+                      // ref="barRef"
+                      progressPercent={progressPercent}
+                      onProgressChanged={onProgressChanged}
+                      onProgressChanging={onProgressChanging}
+                    ></ProgressBar>
                   </div>
                   <span src={cn(styles.time, styles.timeRight)}></span>
                 </div>
@@ -243,7 +270,7 @@ const Player = () => {
                     <i onClick={next} className={styles.IconNext}></i>
                   </div>
                   <div className={cn(styles.icon, styles.iconRight, disableCls)}>
-                    <i onClick={prev} className={styles.IconFavorite}></i>
+                    <i onClick={toggleFavorite} className={styles.IconFavorite}></i>
                   </div>
                 </div>
               </div>
