@@ -25,7 +25,7 @@ const Player = () => {
 
   const [currentTime, setCurrentTime] = useState(0)
   const [songReady, setSongReady] = useState(false)
-  const { currentLyric, currentLineNum, pureMusicLyric, playingLyric, lyricScrollRef, lyricListRef, playLyric, stopLyric } = useLyric({
+  const { curLyricLines, currentLineNum, pureMusicLyric, playingLyric, lyricScrollRef, lyricListRef, playLyric, stopLyric } = useLyric({
     songReady,
     currentTime
   })
@@ -66,10 +66,10 @@ const Player = () => {
     const audioEl = audioRef.current
     if (playingState) {
       audioEl.play()
-      // playLyric()
+      playLyric()
     } else {
       audioEl.pause()
-      // stopLyric()
+      stopLyric()
     }
   }, [playingState])
   useEffect(() => {
@@ -179,7 +179,7 @@ const Player = () => {
       return
     }
     setSongReady(true)
-    // playLyric()
+    playLyric()
     // savePlay(currentSong)
   }
   function toggleFavorite() {
@@ -197,14 +197,14 @@ const Player = () => {
         },
       })
     }
-    // playLyric()
+    playLyric()
   }
   function onProgressChanging(progressPer) {
     progressChanging.current = true
     const curTime = currentSong?.duration * progressPer
     setCurrentTime(curTime)
-    // playLyric()
-    // stopLyric()
+    playLyric()
+    stopLyric()
   }
 
   return (
@@ -247,9 +247,9 @@ const Player = () => {
                   ref={(ref) => (lyricScrollRef.current = ref)}
                 >
                   <div className={styles.lyricWrapper}>
-                    {currentLyric && (
+                    {curLyricLines.length > 0 && (
                       <div ref={(ref) => (lyricListRef.current = ref)}>
-                        {currentLyric?.lines?.map((line, index) => {
+                        {curLyricLines.map((line, index) => {
                           return (
                             <p key={line.time} className={styles.text} className={currentLineNum === index ? cn(styles.text, styles.current) : styles.text}>
                               {line.txt}

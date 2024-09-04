@@ -6,13 +6,14 @@ import useMountedState from '@/hooks/useMountedState'
 import Lyric from 'lyric-parser'
 
 export default function useLyric({ songReady, currentTime }) {
-  const [currentLyric, setCurrentLyric] = useState(null)
+  const [curLyricLines, setCurLyricLines] = useState([])
   const [currentLineNum, setCurrentLineNum] = useState(0)
   const [pureMusicLyric, setPureMusicLyric] = useState('')
   const [playingLyric, setPlayingLyric] = useState('')
 
   const lyricScrollRef = useRef(null)
   const lyricListRef = useRef(null)
+  const currentLyric = useRef(null)
 
   const { playlist, currentIndex } = useContext(PlayMusicStateContext)
   const isMounted = useMountedState()
@@ -28,7 +29,7 @@ export default function useLyric({ songReady, currentTime }) {
         return
       }
       stopLyric()
-      setCurrentLyric(null)
+      currentLyric.current = null
       setCurrentLineNum(0)
       setPureMusicLyric('')
       setPlayingLyric('')
@@ -47,10 +48,10 @@ export default function useLyric({ songReady, currentTime }) {
         // }
     
         // debugger
-        const curLyric = new Lyric(lyric, handleLyric)
-        setCurrentLyric(curLyric)
+        currentLyric.current = new Lyric(lyric, handleLyric)
+        setCurLyricLines(currentLyric.current.lines)
 
-        const hasLyric = curLyric.lines.length
+        const hasLyric = currentLyric.current.lines.length
         if (hasLyric) {
           if (songReady) {
             playLyric()
@@ -63,6 +64,9 @@ export default function useLyric({ songReady, currentTime }) {
       }
     }
     fetchData();
+    // return(() => {
+    //   curLyric = null
+    // })
   }, [currentSong, songReady])
 
   function handleLyric({ lineNum, txt }) {
@@ -84,20 +88,19 @@ export default function useLyric({ songReady, currentTime }) {
   }
   function playLyric() {
     console.log('playLyric-currentTime', currentTime)
-    // console.log('playLyric-currentLyric', currentLyric)
-    if (currentLyric) {
-      currentLyric.seek(currentTime * 1000)
+    if (currentLyric.current) {
+      currentLyric.current.seek(currentTime * 1000)
     }
   }
   function stopLyric() {
-    // console.log('stopLyric-currentLyric', currentLyric)
-    if (currentLyric) {
-      currentLyric.stop()
+    console.log('stopLyric')
+    if (currentLyric.current) {
+      currentLyric.current.stop()
     }
   }
 
   return {
-    currentLyric,
+    curLyricLines,
     currentLineNum,
     pureMusicLyric,
     playingLyric,
