@@ -5,6 +5,7 @@ import Scroll from '@/base/Scroll/Scroll'
 import cn from 'classnames'
 import { PLAY_MODE } from '@/assets/js/constant'
 import ProgressBar from './ProgressBar/ProgressBar'
+import MiniPlayer from './MiniPlayer/MiniPlayer'
 import useMode from './hooks/useMode'
 import useCd from './hooks/useCd'
 import useMiddleInteractive from './hooks/useMiddleInteractive'
@@ -16,7 +17,7 @@ const Player = () => {
   const { playlist, currentIndex, fullScreen, playingState, playMode } = useContext(PlayMusicStateContext)
   const playDispath = useContext(PlayMusicDispatchContext)
   const { modeIcon, changeMode } = useMode()
-  const { cdCls, cdRef, cdImageRef } = useCd()
+  const { cdCls, cdRef, cdImageRef } = useCd(styles)
   const { currentShow, middleLStyle, middleRStyle, onMiddleTouchStart, onMiddleTouchMove, onMiddleTouchEnd } = useMiddleInteractive()
 
   const audioRef = useRef(null)
@@ -301,6 +302,7 @@ const Player = () => {
               </div>
             </div>
           )}
+          <MiniPlayer progressPercent={progressPercent} togglePlay={togglePlay}></MiniPlayer>
           <audio
             ref={(ref) => (audioRef.current = ref)}
             onCanPlay={ready}

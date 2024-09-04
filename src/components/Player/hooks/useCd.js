@@ -1,8 +1,7 @@
 import { useRef, useContext, useMemo, useEffect } from 'react'
 import { PlayMusicStateContext } from '@/reducers/playMusic'
-import styles from '../style.module.scss'
 
-export default function useCd() {
+export default function useCd(styles) {
   const cdRef = useRef(null)
   const cdImageRef = useRef(null)
   const innerTransform = useRef(null)
