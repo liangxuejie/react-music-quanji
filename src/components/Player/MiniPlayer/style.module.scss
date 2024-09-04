@@ -86,6 +86,12 @@
       color: $color-theme-d;
       font-size: 32px;
     }
+    .IconPauseMini:before {
+      content: "\e915";
+    }
+    .IconPlayMini:before {
+      content: "\e903";
+    }
   }
   &.mini-enter-active, &.mini-leave-active {
     transition: all 0.6s cubic-bezier(0.45, 0, 0.55, 1);

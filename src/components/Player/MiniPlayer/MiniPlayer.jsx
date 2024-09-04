@@ -2,6 +2,8 @@ import styles from './style.module.scss'
 import { useState, useEffect, useMemo, useRef, useContext } from 'react'
 import { PlayMusicStateContext, PlayMusicDispatchContext, ACTIONS } from '@/reducers/playMusic'
 import useCd from '../hooks/useCd'
+import ProgressCircle from '../ProgressCircle/ProgressCircle'
+import cn from 'classnames'
 
 const MiniPlayer = ({progressPercent, togglePlay}) => {
   const { playlist, currentIndex, fullScreen, playingState, playMode } = useContext(PlayMusicStateContext)
@@ -13,6 +15,9 @@ const MiniPlayer = ({progressPercent, togglePlay}) => {
   const currentSong = useMemo(() => {
     return playlist[currentIndex]
   }, [playlist, currentIndex])
+  const miniPlayIcon = useMemo(() => {
+    return playingState ? styles.IconPauseMini : styles.IconPlayMini
+  }, [playingState])
 
   function showNormalPlayer() {
     playDispath({
@@ -43,7 +48,6 @@ const MiniPlayer = ({progressPercent, togglePlay}) => {
               ></img>
             </div>
           </div>
-
           <div className={styles.sliderWrapper} ref={(ref) => (sliderWrapperRef.current = ref)}>
             <div className={styles.sliderGroup}>
               {playlist?.map((song) => {
@@ -56,9 +60,10 @@ const MiniPlayer = ({progressPercent, togglePlay}) => {
               })}
             </div>
           </div>
-
           <div className={styles.control}>
-          {/* progress-circle */}
+            <ProgressCircle radius="32" progressPercent={progressPercent}>
+              <i className={cn(styles.iconMini, miniPlayIcon)} onClick={togglePlay}></i>
+            </ProgressCircle>
           </div>
 
           <div className={styles.control} onClick={showPlaylist}>

@@ -86,7 +86,8 @@ const Player = () => {
       },
     })
   }
-  function togglePlay() {
+  function togglePlay(e) {
+    e.stopPropagation();
     if (!songReady) {
       return
     }
