@@ -1,12 +1,16 @@
 import BScroll from '@better-scroll/core'
 import ObserveDOM from '@better-scroll/observe-dom'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useImperativeHandle, forwardRef } from 'react'
 
 BScroll.use(ObserveDOM)
 
-const Scroll = ({children, classNameP, styleP, click = true, probeType = 0, onScroll}) => {
+const Scroll = ({ children, classNameP, styleP, click = true, probeType = 0, onScroll}, ref) => {
   const rootRef = useRef(null)
   const scroll = useRef(null)
+
+  useImperativeHandle(ref, () => ({
+    scroll: scroll.current
+  }))
 
   useEffect(() => {
     const scrollVal = scroll.current = new BScroll(rootRef.current, {
@@ -19,7 +23,6 @@ const Scroll = ({children, classNameP, styleP, click = true, probeType = 0, onSc
         onScroll(pos)
       })
     }
-
     return () => {
       scroll.current.destroy()
     }
@@ -32,4 +35,4 @@ const Scroll = ({children, classNameP, styleP, click = true, probeType = 0, onSc
   )
 }
 
-export default Scroll
+export default forwardRef(Scroll);

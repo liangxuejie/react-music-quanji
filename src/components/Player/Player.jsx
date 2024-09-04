@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef, useContext } from 'react'
 import { PlayMusicStateContext, PlayMusicDispatchContext, ACTIONS } from '@/reducers/playMusic'
 import { formatTime } from '@/assets/js/util'
+import Scroll from '@/base/Scroll/Scroll'
 import cn from 'classnames'
 
 import ProgressBar from './ProgressBar/ProgressBar'
@@ -240,7 +241,11 @@ const Player = () => {
                   </div>
                 </div>
 
-                <div className={styles.middleRight} style={middleRStyle} ref={(ref) => (lyricScrollRef.current = ref)}>
+                <Scroll 
+                  classNameP={styles.middleRight} 
+                  styleP={middleRStyle} 
+                  ref={(ref) => (lyricScrollRef.current = ref)}
+                >
                   <div className={styles.lyricWrapper}>
                     {currentLyric && (
                       <div ref={(ref) => (lyricListRef.current = ref)}>
@@ -259,8 +264,7 @@ const Player = () => {
                       </div>
                     )}
                   </div>
-                </div>
-
+                </Scroll>
               </div>
               <div className={styles.bottom}>
                 <div className={styles.dotWrapper}>
