@@ -3,7 +3,7 @@ import { PlayMusicStateContext, PlayMusicDispatchContext, ACTIONS } from '@/redu
 import { formatTime } from '@/assets/js/util'
 import Scroll from '@/base/Scroll/Scroll'
 import cn from 'classnames'
-
+import { PLAY_MODE } from '@/assets/js/constant'
 import ProgressBar from './ProgressBar/ProgressBar'
 import useMode from './hooks/useMode'
 import useCd from './hooks/useCd'
@@ -26,8 +26,7 @@ const Player = () => {
   const [currentTime, setCurrentTime] = useState(0)
   const [songReady, setSongReady] = useState(false)
   const { curLyricLines, currentLineNum, pureMusicLyric, playingLyric, lyricScrollRef, lyricListRef, playLyric, stopLyric } = useLyric({
-    songReady,
-    currentTime
+    songReady
   })
 
   const currentSong = useMemo(() => {
@@ -66,12 +65,12 @@ const Player = () => {
     const audioEl = audioRef.current
     if (playingState) {
       audioEl.play()
-      playLyric()
+      playLyric(currentTime)
     } else {
       audioEl.pause()
       stopLyric()
     }
-  }, [playingState])
+  }, [playingState, songReady])
   useEffect(() => {
     if (fullScreen) {
       // barRef.current.setOffsetFn(progressPercent)
@@ -179,10 +178,17 @@ const Player = () => {
       return
     }
     setSongReady(true)
-    playLyric()
+    playLyric(currentTime)
     // savePlay(currentSong)
   }
   function toggleFavorite() {
+  }
+  function onProgressChanging(progressPer) {
+    progressChanging.current = true
+    const curTime = currentSong?.duration * progressPer
+    setCurrentTime(curTime)
+    playLyric(curTime)
+    stopLyric()
   }
   function onProgressChanged(progressPer) {
     progressChanging.current = false
@@ -197,14 +203,7 @@ const Player = () => {
         },
       })
     }
-    playLyric()
-  }
-  function onProgressChanging(progressPer) {
-    progressChanging.current = true
-    const curTime = currentSong?.duration * progressPer
-    setCurrentTime(curTime)
-    playLyric()
-    stopLyric()
+    playLyric(curTime)
   }
 
   return (
@@ -240,7 +239,6 @@ const Player = () => {
                     <div className={styles.playingLyric}>{playingLyric}</div>
                   </div>
                 </div>
-
                 <Scroll 
                   classNameP={styles.middleRight} 
                   styleP={middleRStyle} 

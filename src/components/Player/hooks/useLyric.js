@@ -1,11 +1,10 @@
 import { useState, useEffect, useMemo, useRef, useContext } from 'react'
 import { PlayMusicStateContext, PlayMusicDispatchContext, ACTIONS } from '@/reducers/playMusic'
-
 import { getLyric } from '@/service/song'
 import useMountedState from '@/hooks/useMountedState'
 import Lyric from 'lyric-parser'
 
-export default function useLyric({ songReady, currentTime }) {
+export default function useLyric({ songReady }) {
   const [curLyricLines, setCurLyricLines] = useState([])
   const [currentLineNum, setCurrentLineNum] = useState(0)
   const [pureMusicLyric, setPureMusicLyric] = useState('')
@@ -16,8 +15,8 @@ export default function useLyric({ songReady, currentTime }) {
   const currentLyric = useRef(null)
 
   const { playlist, currentIndex } = useContext(PlayMusicStateContext)
-  const isMounted = useMountedState()
   const playDispath = useContext(PlayMusicDispatchContext)
+  const isMounted = useMountedState()
   
   const currentSong = useMemo(() => {
     return playlist[currentIndex]
@@ -47,15 +46,11 @@ export default function useLyric({ songReady, currentTime }) {
         //   return
         // }
     
-        // debugger
         currentLyric.current = new Lyric(lyric, handleLyric)
         setCurLyricLines(currentLyric.current.lines)
-
         const hasLyric = currentLyric.current.lines.length
         if (hasLyric) {
-          if (songReady) {
-            playLyric()
-          }
+          playLyric(0)
         } else {
           const lyricText = lyric.replace(/\[(\d{2}):(\d{2}):(\d{2})\]/g, '')
           setPureMusicLyric(lyricText)
@@ -64,15 +59,11 @@ export default function useLyric({ songReady, currentTime }) {
       }
     }
     fetchData();
-    // return(() => {
-    //   curLyric = null
-    // })
-  }, [currentSong, songReady])
+  }, [currentSong])
 
   function handleLyric({ lineNum, txt }) {
     setCurrentLineNum(lineNum)
     setPlayingLyric(txt)
-    console.log('handleLyric-lineNum', lineNum)
     const scrollComp = lyricScrollRef.current
     const listEl = lyricListRef.current
     if (!listEl) {
@@ -80,20 +71,17 @@ export default function useLyric({ songReady, currentTime }) {
     }
     if (lineNum > 5) {
       const lineEl = listEl.children[lineNum - 5]
-      console.log('handleLyric-lineEl', lineEl)
       scrollComp.scroll.scrollToElement(lineEl, 1000)
     } else {
       scrollComp.scroll.scrollTo(0, 0, 1000)
     }
   }
-  function playLyric() {
-    console.log('playLyric-currentTime', currentTime)
-    if (currentLyric.current) {
+  function playLyric(currentTime) {
+    if (currentLyric.current && songReady) {
       currentLyric.current.seek(currentTime * 1000)
     }
   }
   function stopLyric() {
-    console.log('stopLyric')
     if (currentLyric.current) {
       currentLyric.current.stop()
     }

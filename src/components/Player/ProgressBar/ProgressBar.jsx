@@ -28,6 +28,9 @@ const ProgressBar = ({progressPercent = 0, onProgressChanged, onProgressChanging
     setOffset(barWidth * progressPercent)
   }
   function onClick(e) {
+    Promise.resolve(() => {
+      e.preventDefault();
+    });
     const rect = progressBarRef.current.getBoundingClientRect()
     const offsetWidth = e.pageX - rect.left
     const barWidth = progressBarRef.current.clientWidth - progressBtnWidth
