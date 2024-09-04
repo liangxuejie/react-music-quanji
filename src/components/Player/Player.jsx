@@ -7,6 +7,7 @@ import ProgressBar from './ProgressBar/ProgressBar'
 import useMode from './hooks/useMode'
 import useCd from './hooks/useCd'
 import useMiddleInteractive from './hooks/useMiddleInteractive'
+import useLyric from './hooks/useLyric'
 
 import styles from './style.module.scss'
 
@@ -22,8 +23,12 @@ const Player = () => {
   const progressChanging = useRef(false)
 
   const [currentTime, setCurrentTime] = useState(0)
-  const [songReady, setSongReady] = useState(0)
-  
+  const [songReady, setSongReady] = useState(false)
+  const { currentLyric, currentLineNum, pureMusicLyric, playingLyric, lyricScrollRef, lyricListRef, playLyric, stopLyric } = useLyric({
+    songReady,
+    currentTime
+  })
+
   const currentSong = useMemo(() => {
     return playlist[currentIndex]
   }, [playlist, currentIndex])
@@ -201,7 +206,6 @@ const Player = () => {
     // stopLyric()
   }
 
-  console.log('playingState', playingState)
   return (
     <>
       {playlist.length > 0 && (
@@ -232,13 +236,31 @@ const Player = () => {
                     </div>
                   </div>
                   <div className={styles.playingLyricWrapper}>
-                    {/* <div className={styles.playingLyric}>{playingLyric}</div> */}
+                    <div className={styles.playingLyric}>{playingLyric}</div>
                   </div>
                 </div>
 
-                <div className={styles.middleRight} style={middleRStyle}>
-                  middleRight
+                <div className={styles.middleRight} style={middleRStyle} ref={(ref) => (lyricScrollRef.current = ref)}>
+                  <div className={styles.lyricWrapper}>
+                    {currentLyric && (
+                      <div ref={(ref) => (lyricListRef.current = ref)}>
+                        {currentLyric?.lines?.map((line, index) => {
+                          return (
+                            <p key={line.time} className={styles.text} className={currentLineNum === index ? cn(styles.text, styles.current) : styles.text}>
+                              {line.txt}
+                            </p>
+                          )
+                        })}
+                      </div>
+                    )}
+                    {pureMusicLyric && (
+                      <div className={styles.pureMusic}>
+                        <p>{pureMusicLyric}</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
+
               </div>
               <div className={styles.bottom}>
                 <div className={styles.dotWrapper}>

@@ -8,6 +8,7 @@ const SET_FULL_SCREEN = 'SET_FULL_SCREEN'
 const SET_PLAY_MODE = 'SET_PLAY_MODE'
 const SET_PLAYING_STATE = 'SET_PLAYING_STATE'
 const SET_CURRENT_INDEX = 'SET_CURRENT_INDEX'
+const ADD_SONG_LYRIC = 'ADD_SONG_LYRIC'
 
 export const ACTIONS = {
   SELECT_PLAY,
@@ -16,6 +17,7 @@ export const ACTIONS = {
   SET_PLAY_MODE,
   SET_PLAYING_STATE,
   SET_CURRENT_INDEX,
+  ADD_SONG_LYRIC,
 }
 export const initialState = {
   sequenceList: [],
@@ -75,6 +77,18 @@ const playMusicReducer = (state, { type, payload }) => {
         currentIndex: payload.currentIndex,
       }
     }
+    case ACTIONS.ADD_SONG_LYRIC: {
+      state.sequenceList.map((item) => {
+        if (item.mid === payload.song.mid) {
+          item.lyric = payload.lyric
+        }
+        return item
+      })
+      return {
+        ...state,
+      }
+    }
+
     default:
       return state
   }

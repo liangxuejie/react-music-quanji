@@ -53,7 +53,9 @@ const ProgressBar = ({progressPercent = 0, onProgressChanged, onProgressChanging
     onProgressChanging(progressPer)
   }
   function onTouchEnd(e) {
-    e.preventDefault();
+    Promise.resolve(() => {
+      e.preventDefault();
+    });
     const barWidth = progressBarRef.current.clientWidth - progressBtnWidth
     const progressPer = progressRef.current.clientWidth / barWidth
     onProgressChanged(progressPer)
