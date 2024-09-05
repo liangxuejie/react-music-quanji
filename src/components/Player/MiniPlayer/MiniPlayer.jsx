@@ -1,5 +1,5 @@
 import styles from './style.module.scss'
-import { useState, useEffect, useMemo, useRef, useContext } from 'react'
+import { useMemo, useContext } from 'react'
 import { PlayMusicStateContext, PlayMusicDispatchContext, ACTIONS } from '@/reducers/playMusic'
 import useCd from '../hooks/useCd'
 import useMiniSlider from '../hooks/useMiniSlider'

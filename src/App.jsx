@@ -9,7 +9,7 @@ import { load, saveAll } from '@/assets/js/array-store'
 import { FAVORITE_KEY, PLAY_KEY } from '@/assets/js/constant'
 import { processSongs } from '@/service/song'
 
-const { lazy, Suspense, useReducer } = React
+const { lazy, Suspense, useReducer, useEffect } = React
 const Recommend = lazy(() => import('@/views/Recommend/Recommend'))
 const Singer = lazy(() => import('@/views/Singer/Singer'))
 const TopList = lazy(() => import('@/views/TopList/TopList'))
@@ -19,31 +19,33 @@ const UserCenter = lazy(() => import('@/views/UserCenter/UserCenter'))
 function App() {
   const [playState, playDispath] = useReducer(playMusicReducer, initialState)
   
-  const favoriteSongs = load(FAVORITE_KEY)
-  if (favoriteSongs.length > 0) {
-    processSongs(favoriteSongs).then((songs) => {
-      playDispath({
-        type: ACTIONS.SET_FAVORITE_LIST,
-        payload: {
-          favoriteList: songs,
-        },
+  useEffect(() => {
+    const favoriteSongs = load(FAVORITE_KEY)
+    if (favoriteSongs.length > 0) {
+      processSongs(favoriteSongs).then((songs) => {
+        playDispath({
+          type: ACTIONS.SET_FAVORITE_LIST,
+          payload: {
+            favoriteList: songs,
+          },
+        })
+        saveAll(songs, FAVORITE_KEY)
       })
-      saveAll(songs, FAVORITE_KEY)
-    })
-  }
-
-  const historySongs = load(PLAY_KEY)
-  if (historySongs.length > 0) {
-    processSongs(historySongs).then((songs) => {
-      playDispath({
-        type: ACTIONS.SET_PLAY_HISTORY,
-        payload: {
-          playHistory: songs,
-        },
+    }
+  
+    const historySongs = load(PLAY_KEY)
+    if (historySongs.length > 0) {
+      processSongs(historySongs).then((songs) => {
+        playDispath({
+          type: ACTIONS.SET_PLAY_HISTORY,
+          payload: {
+            playHistory: songs,
+          },
+        })
+        saveAll(songs, PLAY_KEY)
       })
-      saveAll(songs, PLAY_KEY)
-    })
-  }
+    }
+  }, [])
 
   return (
     <>
