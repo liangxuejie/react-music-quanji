@@ -11,6 +11,7 @@ import useCd from './hooks/useCd'
 import useMiddleInteractive from './hooks/useMiddleInteractive'
 import useLyric from './hooks/useLyric'
 import useFavorite from './hooks/useFavorite'
+import usePlayHistory from './hooks/usePlayHistory'
 
 import styles from './style.module.scss'
 
@@ -21,6 +22,7 @@ const Player = () => {
   const { cdCls, cdRef, cdImageRef } = useCd(styles)
   const { currentShow, middleLStyle, middleRStyle, onMiddleTouchStart, onMiddleTouchMove, onMiddleTouchEnd } = useMiddleInteractive()
   const { getFavoriteIcon, toggleFavorite } = useFavorite(styles)
+  const { savePlay } = usePlayHistory()
 
   const audioRef = useRef(null)
   const barRef = useRef(null)
@@ -183,7 +185,7 @@ const Player = () => {
     }
     setSongReady(true)
     playLyric(currentTime)
-    // savePlay(currentSong)
+    savePlay(currentSong)
   }
   function onProgressChanging(progressPer) {
     progressChanging.current = true

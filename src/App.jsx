@@ -18,6 +18,7 @@ const UserCenter = lazy(() => import('@/views/UserCenter/UserCenter'))
 
 function App() {
   const [playState, playDispath] = useReducer(playMusicReducer, initialState)
+  
   const favoriteSongs = load(FAVORITE_KEY)
   if (favoriteSongs.length > 0) {
     processSongs(favoriteSongs).then((songs) => {
@@ -28,6 +29,19 @@ function App() {
         },
       })
       saveAll(songs, FAVORITE_KEY)
+    })
+  }
+
+  const historySongs = load(PLAY_KEY)
+  if (historySongs.length > 0) {
+    processSongs(historySongs).then((songs) => {
+      playDispath({
+        type: ACTIONS.SET_PLAY_HISTORY,
+        payload: {
+          playHistory: songs,
+        },
+      })
+      saveAll(songs, PLAY_KEY)
     })
   }
 

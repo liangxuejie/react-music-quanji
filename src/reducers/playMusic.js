@@ -10,6 +10,7 @@ const SET_PLAY_MODE = 'SET_PLAY_MODE'
 const SET_PLAYING_STATE = 'SET_PLAYING_STATE'
 const SET_CURRENT_INDEX = 'SET_CURRENT_INDEX'
 const SET_FAVORITE_LIST = 'SET_FAVORITE_LIST'
+const SET_PLAY_HISTORY = 'SET_PLAY_HISTORY'
 
 export const ACTIONS = {
   SELECT_PLAY,
@@ -20,6 +21,7 @@ export const ACTIONS = {
   SET_PLAYING_STATE,
   SET_CURRENT_INDEX,
   SET_FAVORITE_LIST,
+  SET_PLAY_HISTORY,
 }
 export const initialState = {
   sequenceList: [],
@@ -29,6 +31,7 @@ export const initialState = {
   currentIndex: 0,
   fullScreen: false,
   favoriteList: [],
+  playHistory: [],
 }
 
 const playMusicReducer = (state, { type, payload }) => {
@@ -96,7 +99,12 @@ const playMusicReducer = (state, { type, payload }) => {
         favoriteList: payload.favoriteList
       }
     }
-
+    case ACTIONS.SET_PLAY_HISTORY: {
+      return {
+        ...state,
+        playHistory: payload.playHistory
+      }
+    }
     default:
       return state
   }
