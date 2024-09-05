@@ -16,9 +16,6 @@ export default function useMiniSlider() {
   }, [fullScreen, playlist])
 
   useEffect(() => {
-    if (!sliderWrapperRef.current) {
-      return
-    }
     if (!sliderShow) {
       return
     }

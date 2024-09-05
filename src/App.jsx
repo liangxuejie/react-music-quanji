@@ -4,7 +4,10 @@ import ROUTES from '@/constants/routes'
 import Header from '@/components/Header/Header'
 import Tab from '@/components/Tab/Tab'
 import Player from '@/components/Player/Player'
-import playMusicReducer, { initialState, PlayMusicStateContext, PlayMusicDispatchContext } from '@/reducers/playMusic'
+import playMusicReducer, { initialState, PlayMusicStateContext, PlayMusicDispatchContext, ACTIONS } from '@/reducers/playMusic'
+import { load, saveAll } from '@/assets/js/array-store'
+import { FAVORITE_KEY, PLAY_KEY } from '@/assets/js/constant'
+import { processSongs } from '@/service/song'
 
 const { lazy, Suspense, useReducer } = React
 const Recommend = lazy(() => import('@/views/Recommend/Recommend'))
@@ -15,6 +18,18 @@ const UserCenter = lazy(() => import('@/views/UserCenter/UserCenter'))
 
 function App() {
   const [playState, playDispath] = useReducer(playMusicReducer, initialState)
+  const favoriteSongs = load(FAVORITE_KEY)
+  if (favoriteSongs.length > 0) {
+    processSongs(favoriteSongs).then((songs) => {
+      playDispath({
+        type: ACTIONS.SET_FAVORITE_LIST,
+        payload: {
+          favoriteList: songs,
+        },
+      })
+      saveAll(songs, FAVORITE_KEY)
+    })
+  }
 
   return (
     <>

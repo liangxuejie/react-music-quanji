@@ -4,20 +4,22 @@ import { shuffle } from '@/assets/js/util'
 
 const SELECT_PLAY = 'SELECT_PLAY'
 const RANDOM_PLAY = 'RANDOM_PLAY'
+const ADD_SONG_LYRIC = 'ADD_SONG_LYRIC'
 const SET_FULL_SCREEN = 'SET_FULL_SCREEN'
 const SET_PLAY_MODE = 'SET_PLAY_MODE'
 const SET_PLAYING_STATE = 'SET_PLAYING_STATE'
 const SET_CURRENT_INDEX = 'SET_CURRENT_INDEX'
-const ADD_SONG_LYRIC = 'ADD_SONG_LYRIC'
+const SET_FAVORITE_LIST = 'SET_FAVORITE_LIST'
 
 export const ACTIONS = {
   SELECT_PLAY,
   RANDOM_PLAY,
+  ADD_SONG_LYRIC,
   SET_FULL_SCREEN,
   SET_PLAY_MODE,
   SET_PLAYING_STATE,
   SET_CURRENT_INDEX,
-  ADD_SONG_LYRIC,
+  SET_FAVORITE_LIST,
 }
 export const initialState = {
   sequenceList: [],
@@ -53,6 +55,17 @@ const playMusicReducer = (state, { type, payload }) => {
         currentIndex: 0,
       }
     }
+    case ACTIONS.ADD_SONG_LYRIC: {
+      state.sequenceList.map((item) => {
+        if (item.mid === payload.song.mid) {
+          item.lyric = payload.lyric
+        }
+        return item
+      })
+      return {
+        ...state,
+      }
+    }
     case ACTIONS.SET_FULL_SCREEN: {
       return {
         ...state,
@@ -77,15 +90,10 @@ const playMusicReducer = (state, { type, payload }) => {
         currentIndex: payload.currentIndex,
       }
     }
-    case ACTIONS.ADD_SONG_LYRIC: {
-      state.sequenceList.map((item) => {
-        if (item.mid === payload.song.mid) {
-          item.lyric = payload.lyric
-        }
-        return item
-      })
+    case ACTIONS.SET_FAVORITE_LIST: {
       return {
         ...state,
+        favoriteList: payload.favoriteList
       }
     }
 

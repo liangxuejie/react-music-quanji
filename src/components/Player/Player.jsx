@@ -10,6 +10,7 @@ import useMode from './hooks/useMode'
 import useCd from './hooks/useCd'
 import useMiddleInteractive from './hooks/useMiddleInteractive'
 import useLyric from './hooks/useLyric'
+import useFavorite from './hooks/useFavorite'
 
 import styles from './style.module.scss'
 
@@ -19,6 +20,7 @@ const Player = () => {
   const { modeIcon, changeMode } = useMode()
   const { cdCls, cdRef, cdImageRef } = useCd(styles)
   const { currentShow, middleLStyle, middleRStyle, onMiddleTouchStart, onMiddleTouchMove, onMiddleTouchEnd } = useMiddleInteractive()
+  const { getFavoriteIcon, toggleFavorite } = useFavorite(styles)
 
   const audioRef = useRef(null)
   const barRef = useRef(null)
@@ -183,8 +185,6 @@ const Player = () => {
     playLyric(currentTime)
     // savePlay(currentSong)
   }
-  function toggleFavorite() {
-  }
   function onProgressChanging(progressPer) {
     progressChanging.current = true
     const curTime = currentSong?.duration * progressPer
@@ -296,8 +296,8 @@ const Player = () => {
                   <div className={cn(styles.icon, styles.iconRight, disableCls)}>
                     <i onClick={next} className={styles.IconNext}></i>
                   </div>
-                  <div className={cn(styles.icon, styles.iconRight, disableCls)}>
-                    <i onClick={toggleFavorite} className={styles.IconFavorite}></i>
+                  <div className={cn(styles.icon, styles.iconRight)}>
+                    <i onClick={() => {toggleFavorite(currentSong)}} className={getFavoriteIcon(currentSong)}></i>
                   </div>
                 </div>
               </div>

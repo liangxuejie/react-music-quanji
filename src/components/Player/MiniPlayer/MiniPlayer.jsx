@@ -29,9 +29,7 @@ const MiniPlayer = ({progressPercent, togglePlay}) => {
     })
   }
   function showPlaylist(e) {
-    Promise.resolve(() => {
-      e.stopPropagation();
-    });
+    e.stopPropagation();
   }
 
   return (

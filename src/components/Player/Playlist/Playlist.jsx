@@ -1,11 +1,11 @@
 import styles from './style.module.scss'
 
-const Singer = () => {
+const Playlist = () => {
   return (
     <div className={styles.header}>
-      Singer
+      Playlist
     </div>
   )
 }
 
-export default Singer
+export default Playlist
