@@ -18,7 +18,7 @@ import styles from './style.module.scss'
 const Player = () => {
   const { playlist, currentIndex, fullScreen, playingState, playMode } = useContext(PlayMusicStateContext)
   const playDispath = useContext(PlayMusicDispatchContext)
-  const { modeIcon, changeMode } = useMode()
+  const { modeIcon, changeMode } = useMode(styles)
   const { cdCls, cdRef, cdImageRef } = useCd(styles)
   const { currentShow, middleLStyle, middleRStyle, onMiddleTouchStart, onMiddleTouchMove, onMiddleTouchEnd } = useMiddleInteractive()
   const { getFavoriteIcon, toggleFavorite } = useFavorite(styles)

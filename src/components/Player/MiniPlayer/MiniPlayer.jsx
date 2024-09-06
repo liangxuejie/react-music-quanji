@@ -35,6 +35,10 @@ const MiniPlayer = ({progressPercent, togglePlay}) => {
     e.stopPropagation();
     setPlaylistShow(true)
   }
+  function hidePlaylist(e) {
+    e.stopPropagation();
+    setPlaylistShow(false)
+  }
 
   return (
     <>
@@ -73,7 +77,7 @@ const MiniPlayer = ({progressPercent, togglePlay}) => {
             <i className={styles.IconPlaylist}></i>
           </div>
 
-          <PlaylistCom playlistShow={playlistShow}></PlaylistCom>
+          <PlaylistCom playlistShow={playlistShow} hidePlaylist={hidePlaylist}></PlaylistCom>
         </div>
       )}
     </>

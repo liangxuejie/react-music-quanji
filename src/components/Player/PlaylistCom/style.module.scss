@@ -51,6 +51,15 @@
             content: "\e907";
           }
         }
+        .IconLoop:before {
+          content: "\e90e";
+        }
+        .IconSequence:before {
+          content: "\e90f";
+        }
+        .IconRandom:before {
+          content: "\e910";
+        }
       }
     }
     .listContent {
@@ -79,8 +88,14 @@
           margin-right: 15px;
           font-size: $font-size-small;
           color: $color-theme;
-          .icon-favorite {
+          .IconFavorite {
             color: $color-sub-theme;
+          }
+          .IconFavorite:before {
+            content: "\e909";
+          }
+          .IconNotFavorite:before {
+            content: "\e90a";
           }
         }
         .delete {

@@ -5,9 +5,9 @@ import { PlayMusicStateContext, PlayMusicDispatchContext, ACTIONS } from '@/redu
 import useMode from '../hooks/useMode'
 import useFavorite from '../hooks/useFavorite'
 
-const PlaylistCom = ({playlistShow}) => {
+const PlaylistCom = ({playlistShow, hidePlaylist}) => {
   const { playlist, currentIndex, fullScreen, playingState, playMode, sequenceList } = useContext(PlayMusicStateContext)
-  const { modeIcon, modeText, changeMode } = useMode()
+  const { modeIcon, modeText, changeMode } = useMode(styles)
   const { getFavoriteIcon, toggleFavorite } = useFavorite(styles)
   const removing = useRef(false)
 
@@ -35,24 +35,33 @@ const PlaylistCom = ({playlistShow}) => {
   function showAddSong() {
     // addSongRef.value.show()
   }
-  function hide() {
-    // visible.value = false
+  function removeSong(e, song) {
+    e.stopPropagation();
+    // if (removing.value) {
+    //   return
+    // }
+    // removing.value = true
+    // store.dispatch('removeSong', song)
+    // if (!playlist.value.length) {
+    //   hide()
+    // }
+    // setTimeout(() => {
+    //   removing.value = false
+    // }, 300)
+  }
+  function stopPropagation() {
+    // addSongRef.value.show()
   }
 
   return (
     <>
       {playlistShow && playlist.length > 0 && (
-        <div className={styles.playlist}
-        // @click="hide"
-        >
-          <div className={styles.listWrapper}>
+        <div className={styles.playlist} onClick={(e) => {hidePlaylist(e)}}>
+          <div className={styles.listWrapper} onClick={(e) => {e.stopPropagation()}}>
 
             <div className={styles.listHeader}>
               <div className={styles.title}>
-                <i className={cn(styles.icon, modeIcon)}
-                  // @click="changeMode"
-                >
-                </i>
+                <i className={cn(styles.icon, modeIcon)} onClick={changeMode}></i>
                 <span className={styles.text}>{modeText}</span>
                 <span className={styles.clear} onClick={showConfirm}>
                   <i className={styles.IconClear}></i>
@@ -69,14 +78,14 @@ const PlaylistCom = ({playlistShow}) => {
                     <li 
                       className={styles.item}
                       key={song.id}
-                      onClick={() => selectItem({song})}
+                      onClick={() => selectItem(song)}
                     >
                       <i className={cn(styles.current, getCurrentIcon(song))}></i>
                       <span className={styles.text}>{song.name}</span>
-                      <span className={styles.favorite} onClick={() => toggleFavorite({song})}>
+                      <span className={styles.favorite} onClick={() => toggleFavorite(song)}>
                         <i className={getFavoriteIcon(song)}></i>
                       </span>
-                      <span className={removing ? cn(styles.delete, styles.disable) : styles.delete}>
+                      <span className={removing ? cn(styles.delete, styles.disable) : styles.delete} onClick={(e) => {removeSong(e, song)}}>
                         <i className={styles.IconDelete}></i>
                       </span>
                     </li>
@@ -92,7 +101,7 @@ const PlaylistCom = ({playlistShow}) => {
               </div>
             </div>
 
-            <div className={styles.listFooter} onClick={hide}>
+            <div className={styles.listFooter} onClick={(e) => {hidePlaylist(e)}}>
               <span>关闭</span>
             </div>
 
