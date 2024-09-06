@@ -14,7 +14,7 @@ const MiniPlayer = ({progressPercent, togglePlay}) => {
   const playDispath = useContext(PlayMusicDispatchContext)
   const { cdCls, cdRef, cdImageRef } = useCd(styles)
   const { sliderWrapperRef } = useMiniSlider()
-  const [playlistShow, setPlaylistShow] = useState(true)
+  const [playlistShow, setPlaylistShow] = useState(false)
 
   const currentSong = useMemo(() => {
     return playlist[currentIndex]

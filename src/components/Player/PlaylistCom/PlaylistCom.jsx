@@ -5,19 +5,55 @@ import { PlayMusicStateContext, PlayMusicDispatchContext, ACTIONS } from '@/redu
 import useMode from '../hooks/useMode'
 import useFavorite from '../hooks/useFavorite'
 import Confirm from '@/base/Confirm/Confirm'
+import Scroll from '@/base/scroll/scroll'
 
 const PlaylistCom = ({playlistShow, hidePlaylist}) => {
-  const { playlist, currentIndex, fullScreen, playingState, playMode, sequenceList } = useContext(PlayMusicStateContext)
+  const { playlist, currentIndex, playingState, sequenceList } = useContext(PlayMusicStateContext)
   const playDispath = useContext(PlayMusicDispatchContext)
   const { modeIcon, modeText, changeMode } = useMode(styles)
   const { getFavoriteIcon, toggleFavorite } = useFavorite(styles)
   const [removing, setRemoving] = useState(false)
   const [confirmShow, setConfirmShow] = useState(false)
+  const scrollRef = useRef(null)
+  const listRef = useRef(null)
 
   const currentSong = useMemo(() => {
     return playlist[currentIndex]
   }, [playlist, currentIndex])
 
+  useEffect(() => {
+    if (!playlistShow || !currentSong.id) {
+      return
+    }
+    scrollToCurrent()
+  }, [currentSong])
+  useEffect(() => {
+    if (!playlistShow || !currentSong.id) {
+      return
+    }
+    setTimeout(() => {
+      refreshScroll()
+      scrollToCurrent()
+    }, 0)
+  }, [playlistShow])
+
+  function scrollToCurrent() {
+    const index = sequenceList.findIndex((song) => {
+      return currentSong.id === song.id
+    })
+    if (index === -1) {
+      return
+    }
+    const target = listRef.current.children[index]
+    if (scrollRef.current.scroll) {
+      scrollRef.current.scroll.scrollToElement(target, 300)
+    }
+  }
+  function refreshScroll() {
+    if (scrollRef.current.scroll) {
+      scrollRef.current.scroll.refresh()
+    }
+  }
   function getCurrentIcon(song) {
     if (song.id === currentSong.id) {
       return styles.IconPlay
@@ -90,10 +126,8 @@ const PlaylistCom = ({playlistShow, hidePlaylist}) => {
                 </span>
               </div>
             </div>
-            <div className={styles.listContent}>
-              <ul
-              // ref="listRef"
-              >
+            <Scroll classNameP={styles.listContent} ref={(ref) => (scrollRef.current = ref)}>
+              <ul ref={(ref) => (listRef.current = ref)}>
                 {sequenceList?.map((song) => {
                   return (
                     <li 
@@ -113,7 +147,7 @@ const PlaylistCom = ({playlistShow, hidePlaylist}) => {
                   )
                 })}
               </ul>
-            </div>
+            </Scroll>
             <div className={styles.listAdd}>
               <div className={styles.add} onClick={showAddSong}>
                 <i className={styles.IconAdd}></i>
