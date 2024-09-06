@@ -72,11 +72,9 @@ const MiniPlayer = ({progressPercent, togglePlay}) => {
               <i className={cn(styles.iconMini, miniPlayIcon)} onClick={togglePlay}></i>
             </ProgressCircle>
           </div>
-
           <div className={styles.control} onClick={showPlaylist}>
             <i className={styles.IconPlaylist}></i>
           </div>
-
           <PlaylistCom playlistShow={playlistShow} hidePlaylist={hidePlaylist}></PlaylistCom>
         </div>
       )}

@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useRef, useContext } from 'react'
 import { PlayMusicStateContext, PlayMusicDispatchContext, ACTIONS } from '@/reducers/playMusic'
 import useMode from '../hooks/useMode'
 import useFavorite from '../hooks/useFavorite'
+import Confirm from '@/base/Confirm/Confirm'
 
 const PlaylistCom = ({playlistShow, hidePlaylist}) => {
   const { playlist, currentIndex, fullScreen, playingState, playMode, sequenceList } = useContext(PlayMusicStateContext)
@@ -11,6 +12,7 @@ const PlaylistCom = ({playlistShow, hidePlaylist}) => {
   const { modeIcon, modeText, changeMode } = useMode(styles)
   const { getFavoriteIcon, toggleFavorite } = useFavorite(styles)
   const [removing, setRemoving] = useState(false)
+  const [confirmShow, setConfirmShow] = useState(false)
 
   const currentSong = useMemo(() => {
     return playlist[currentIndex]
@@ -59,7 +61,16 @@ const PlaylistCom = ({playlistShow, hidePlaylist}) => {
     }, 300)
   }
   function showConfirm() {
-    // confirmRef.current.show()
+    setConfirmShow(true)
+  }
+  function confirmClear() {
+    playDispath({
+      type: ACTIONS.CLEAR_SONG_LIST,
+    })
+    setConfirmShow(false)
+  }
+  function cancel() {
+    setConfirmShow(false)
   }
   function showAddSong() {
     // addSongRef.current.show()
@@ -70,7 +81,6 @@ const PlaylistCom = ({playlistShow, hidePlaylist}) => {
       {playlistShow && playlist.length > 0 && (
         <div className={styles.playlist} onClick={(e) => {hidePlaylist(e)}}>
           <div className={styles.listWrapper} onClick={(e) => {e.stopPropagation()}}>
-
             <div className={styles.listHeader}>
               <div className={styles.title}>
                 <i className={cn(styles.icon, modeIcon)} onClick={changeMode}></i>
@@ -80,7 +90,6 @@ const PlaylistCom = ({playlistShow, hidePlaylist}) => {
                 </span>
               </div>
             </div>
-
             <div className={styles.listContent}>
               <ul
               // ref="listRef"
@@ -105,27 +114,23 @@ const PlaylistCom = ({playlistShow, hidePlaylist}) => {
                 })}
               </ul>
             </div>
-
             <div className={styles.listAdd}>
               <div className={styles.add} onClick={showAddSong}>
                 <i className={styles.IconAdd}></i>
                 <span className={styles.text}>添加歌曲到队列</span>
               </div>
             </div>
-
             <div className={styles.listFooter} onClick={(e) => {hidePlaylist(e)}}>
               <span>关闭</span>
             </div>
-
           </div>
-
-          {/* <confirm
-            ref="confirmRef"
-            @confirm="confirmClear"
+          <Confirm
+            confirmShow={confirmShow}
+            confirm={confirmClear}
+            cancel={cancel}
             text="是否清空播放列表？"
-            confirm-btn-text="清空"
-          ></confirm> */}
-
+            confirmBtnText="清空"
+          ></Confirm>
         </div>
       )}
     </>

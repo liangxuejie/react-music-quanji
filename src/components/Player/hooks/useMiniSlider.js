@@ -49,11 +49,11 @@ export default function useMiniSlider() {
     }
   }, [sliderShow])
 
-  // useEffect(() => {
-  //   if (sliderRef.current && sliderShow) {
-  //     sliderRef.current.goToPage(currentIndex, 0, 0)
-  //   }
-  // }, [currentIndex])
+  useEffect(() => {
+    if (sliderRef.current && sliderShow) {
+      sliderRef.current.goToPage(currentIndex, 0, 0)
+    }
+  }, [currentIndex])
 
   // useEffect(() => {
   //   if (sliderRef.current && sliderShow && playlist.length) {

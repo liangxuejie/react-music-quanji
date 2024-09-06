@@ -7,6 +7,7 @@ const RANDOM_PLAY = 'RANDOM_PLAY'
 const ADD_SONG_LYRIC = 'ADD_SONG_LYRIC'
 const CHANGE_MODE = 'CHANGE_MODE'
 const REMOVE_SONG = 'REMOVE_SONG'
+const CLEAR_SONG_LIST = 'CLEAR_SONG_LIST'
 
 const SET_FULL_SCREEN = 'SET_FULL_SCREEN'
 const SET_PLAY_MODE = 'SET_PLAY_MODE'
@@ -21,6 +22,7 @@ export const ACTIONS = {
   ADD_SONG_LYRIC,
   CHANGE_MODE,
   REMOVE_SONG,
+  CLEAR_SONG_LIST,
 
   SET_FULL_SCREEN,
   SET_PLAY_MODE,
@@ -123,6 +125,14 @@ const playMusicReducer = (state, { type, payload }) => {
         playlist: playlist,
         currentIndex: currentIndex,
         playingState: playingState,
+      }
+    }
+    case ACTIONS.CLEAR_SONG_LIST: {
+      return {
+        ...state,
+        sequenceList: [],
+        playlist: [],
+        currentIndex: 0,
       }
     }
 
