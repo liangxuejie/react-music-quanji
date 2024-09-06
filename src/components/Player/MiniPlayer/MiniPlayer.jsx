@@ -3,14 +3,12 @@ import { useMemo, useContext, useState } from 'react'
 import { PlayMusicStateContext, PlayMusicDispatchContext, ACTIONS } from '@/reducers/playMusic'
 import useCd from '../hooks/useCd'
 import useMiniSlider from '../hooks/useMiniSlider'
-
 import ProgressCircle from '../ProgressCircle/ProgressCircle'
 import PlaylistCom from '../PlaylistCom/PlaylistCom'
-
 import cn from 'classnames'
 
 const MiniPlayer = ({progressPercent, togglePlay}) => {
-  const { playlist, currentIndex, fullScreen, playingState, playMode } = useContext(PlayMusicStateContext)
+  const { playlist, currentIndex, fullScreen, playingState } = useContext(PlayMusicStateContext)
   const playDispath = useContext(PlayMusicDispatchContext)
   const { cdCls, cdRef, cdImageRef } = useCd(styles)
   const { sliderWrapperRef } = useMiniSlider()
