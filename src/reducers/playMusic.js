@@ -6,6 +6,7 @@ const SELECT_PLAY = 'SELECT_PLAY'
 const RANDOM_PLAY = 'RANDOM_PLAY'
 const ADD_SONG_LYRIC = 'ADD_SONG_LYRIC'
 const CHANGE_MODE = 'CHANGE_MODE'
+const REMOVE_SONG = 'REMOVE_SONG'
 
 const SET_FULL_SCREEN = 'SET_FULL_SCREEN'
 const SET_PLAY_MODE = 'SET_PLAY_MODE'
@@ -19,6 +20,7 @@ export const ACTIONS = {
   RANDOM_PLAY,
   ADD_SONG_LYRIC,
   CHANGE_MODE,
+  REMOVE_SONG,
 
   SET_FULL_SCREEN,
   SET_PLAY_MODE,
@@ -93,6 +95,36 @@ const playMusicReducer = (state, { type, payload }) => {
         playMode: payload.playMode,
       }
     }
+    case ACTIONS.REMOVE_SONG: {
+      const sequenceList = state.sequenceList.slice()
+      const playlist = state.playlist.slice()
+    
+      const sequenceIndex = findIndex(sequenceList, payload.song)
+      const playIndex = findIndex(playlist, payload.song)
+      if (sequenceIndex < 0 || playIndex < 0) {
+        return
+      }
+    
+      sequenceList.splice(sequenceIndex, 1)
+      playlist.splice(playIndex, 1)
+    
+      let currentIndex = state.currentIndex
+      if (playIndex < currentIndex || currentIndex === playlist.length) {
+        currentIndex--
+      }
+    
+      let playingState = state.playingState
+      if (!playlist.length) {
+        playingState = false
+      }
+      return {
+        ...state,
+        sequenceList: sequenceList,
+        playlist: playlist,
+        currentIndex: currentIndex,
+        playingState: playingState,
+      }
+    }
 
     case ACTIONS.SET_FULL_SCREEN: {
       return {
@@ -139,3 +171,9 @@ export default playMusicReducer
 
 export const PlayMusicStateContext = React.createContext(initialState)
 export const PlayMusicDispatchContext = React.createContext(() => {})
+
+function findIndex(list, song) {
+  return list.findIndex((item) => {
+    return item.id === song.id
+  })
+}

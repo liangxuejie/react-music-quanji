@@ -7,9 +7,10 @@ import useFavorite from '../hooks/useFavorite'
 
 const PlaylistCom = ({playlistShow, hidePlaylist}) => {
   const { playlist, currentIndex, fullScreen, playingState, playMode, sequenceList } = useContext(PlayMusicStateContext)
+  const playDispath = useContext(PlayMusicDispatchContext)
   const { modeIcon, modeText, changeMode } = useMode(styles)
   const { getFavoriteIcon, toggleFavorite } = useFavorite(styles)
-  const removing = useRef(false)
+  const [removing, setRemoving] = useState(false)
 
   const currentSong = useMemo(() => {
     return playlist[currentIndex]
@@ -20,37 +21,48 @@ const PlaylistCom = ({playlistShow, hidePlaylist}) => {
       return styles.IconPlay
     }
   }
-
-  function showConfirm() {
-    // confirmRef.value.show()
-  }
   function selectItem(song) {
-    // const index = playlist.value.findIndex((item) => {
-    //   return song.id === item.id
-    // })
+    const index = playlist.findIndex((item) => {
+      return song.id === item.id
+    })
 
-    // store.commit('setCurrentIndex', index)
-    // store.commit('setPlayingState', true)
-  }
-  function showAddSong() {
-    // addSongRef.value.show()
+    playDispath({
+      type: ACTIONS.SET_CURRENT_INDEX,
+      payload: {
+        currentIndex: index,
+      },
+    })
+    playDispath({
+      type: ACTIONS.SET_PLAYING_STATE,
+      payload: {
+        playingState: true,
+      },
+    })
   }
   function removeSong(e, song) {
     e.stopPropagation();
-    // if (removing.value) {
-    //   return
-    // }
-    // removing.value = true
-    // store.dispatch('removeSong', song)
-    // if (!playlist.value.length) {
-    //   hide()
-    // }
-    // setTimeout(() => {
-    //   removing.value = false
-    // }, 300)
+    if (removing) {
+      return
+    }
+    setRemoving(true)
+    playDispath({
+      type: ACTIONS.REMOVE_SONG,
+      payload: {
+        song: song,
+      },
+    })
+    if (!playlist.length) {
+      hidePlaylist()
+    }
+    setTimeout(() => {
+      setRemoving(false)
+    }, 300)
   }
-  function stopPropagation() {
-    // addSongRef.value.show()
+  function showConfirm() {
+    // confirmRef.current.show()
+  }
+  function showAddSong() {
+    // addSongRef.current.show()
   }
 
   return (
