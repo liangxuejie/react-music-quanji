@@ -27,7 +27,7 @@ export default function useMode(styles) {
   function changeMode() {
     const mode = (playMode + 1) % 3
     playDispath({
-      type: ACTIONS.SET_PLAY_MODE,
+      type: ACTIONS.CHANGE_MODE,
       payload: {
         playMode: mode,
       },

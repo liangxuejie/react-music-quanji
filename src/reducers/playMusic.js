@@ -5,6 +5,8 @@ import { shuffle } from '@/assets/js/util'
 const SELECT_PLAY = 'SELECT_PLAY'
 const RANDOM_PLAY = 'RANDOM_PLAY'
 const ADD_SONG_LYRIC = 'ADD_SONG_LYRIC'
+const CHANGE_MODE = 'CHANGE_MODE'
+
 const SET_FULL_SCREEN = 'SET_FULL_SCREEN'
 const SET_PLAY_MODE = 'SET_PLAY_MODE'
 const SET_PLAYING_STATE = 'SET_PLAYING_STATE'
@@ -16,6 +18,8 @@ export const ACTIONS = {
   SELECT_PLAY,
   RANDOM_PLAY,
   ADD_SONG_LYRIC,
+  CHANGE_MODE,
+
   SET_FULL_SCREEN,
   SET_PLAY_MODE,
   SET_PLAYING_STATE,
@@ -69,6 +73,27 @@ const playMusicReducer = (state, { type, payload }) => {
         ...state,
       }
     }
+    case ACTIONS.CHANGE_MODE: {
+      const currentSong = state.playlist[state.currentIndex]
+      const currentId = currentSong.id
+      let list = []
+      if (payload.playMode === PLAY_MODE.random) {
+        list = shuffle(state.sequenceList)
+      } else {
+        list = state.sequenceList
+      }
+      const index = list.findIndex((song) => {
+        return song.id === currentId
+      })
+
+      return {
+        ...state,
+        playlist: list,
+        currentIndex: index,
+        playMode: payload.playMode,
+      }
+    }
+
     case ACTIONS.SET_FULL_SCREEN: {
       return {
         ...state,
@@ -105,6 +130,7 @@ const playMusicReducer = (state, { type, payload }) => {
         playHistory: payload.playHistory
       }
     }
+  
     default:
       return state
   }
