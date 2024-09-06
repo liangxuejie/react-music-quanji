@@ -21,6 +21,7 @@
               </span>
             </h1>
           </div>
+
           <scroll
             ref="scrollRef"
             class="list-content"
@@ -54,12 +55,14 @@
               </li>
             </transition-group>
           </scroll>
+          
           <div class="list-add">
             <div class="add" @click="showAddSong">
               <i class="icon-add"></i>
               <span class="text">添加歌曲到队列</span>
             </div>
           </div>
+          
           <div class="list-footer" @click="hide">
             <span>关闭</span>
           </div>

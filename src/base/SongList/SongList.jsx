@@ -11,9 +11,9 @@ const SongList = ({songs, rank, selectItem}) => {
       {songs?.map((song, index) => {
         return (
           <li 
-          className={styles.item}
-          key={song.id}
-          onClick={() => selectItem({song, index})}
+            className={styles.item}
+            key={song.id}
+            onClick={() => selectItem({song, index})}
           >
             {rank && (
               <div className={styles.rank}>

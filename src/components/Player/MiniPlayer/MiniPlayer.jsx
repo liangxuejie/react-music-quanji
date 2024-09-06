@@ -1,10 +1,12 @@
 import styles from './style.module.scss'
-import { useMemo, useContext } from 'react'
+import { useMemo, useContext, useState } from 'react'
 import { PlayMusicStateContext, PlayMusicDispatchContext, ACTIONS } from '@/reducers/playMusic'
 import useCd from '../hooks/useCd'
 import useMiniSlider from '../hooks/useMiniSlider'
 
 import ProgressCircle from '../ProgressCircle/ProgressCircle'
+import PlaylistCom from '../PlaylistCom/PlaylistCom'
+
 import cn from 'classnames'
 
 const MiniPlayer = ({progressPercent, togglePlay}) => {
@@ -12,7 +14,8 @@ const MiniPlayer = ({progressPercent, togglePlay}) => {
   const playDispath = useContext(PlayMusicDispatchContext)
   const { cdCls, cdRef, cdImageRef } = useCd(styles)
   const { sliderWrapperRef } = useMiniSlider()
- 
+  const [playlistShow, setPlaylistShow] = useState(true)
+
   const currentSong = useMemo(() => {
     return playlist[currentIndex]
   }, [playlist, currentIndex])
@@ -30,6 +33,7 @@ const MiniPlayer = ({progressPercent, togglePlay}) => {
   }
   function showPlaylist(e) {
     e.stopPropagation();
+    setPlaylistShow(true)
   }
 
   return (
@@ -69,7 +73,7 @@ const MiniPlayer = ({progressPercent, togglePlay}) => {
             <i className={styles.IconPlaylist}></i>
           </div>
 
-          {/* <playlist ref="playlistRef"></playlist> */}
+          <PlaylistCom playlistShow={playlistShow}></PlaylistCom>
         </div>
       )}
     </>
