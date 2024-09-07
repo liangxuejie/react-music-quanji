@@ -23,6 +23,7 @@ export default defineConfig({
         additionalData: `
           @import "@/assets/scss/variable.scss";
           @import "@/assets/scss/mixin.scss";
+          @import "@/assets/scss/icon.scss";
         `
       }
     }

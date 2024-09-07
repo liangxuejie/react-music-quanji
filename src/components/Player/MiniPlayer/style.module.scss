@@ -1,12 +1,3 @@
-@keyframes rotate {
-  0% {
-    transform: rotate(0)
-  }
-
-  100% {
-    transform: rotate(360deg)
-  }
-}
 .miniPlayer {
   display: flex;
   align-items: center;
@@ -70,14 +61,11 @@
     flex: 0 0 30px;
     width: 30px;
     padding: 0 10px;
-    .IconPlaylist {
+    .IconPlayList {
       position: relative;
       top: -2px;
       font-size: 28px;
       color: $color-theme-d;
-    }
-    .IconPlaylist:before {
-      content: "\e904";
     }
     .iconMini {
       position: absolute;
@@ -85,12 +73,6 @@
       top: 0;
       color: $color-theme-d;
       font-size: 32px;
-    }
-    .IconPauseMini:before {
-      content: "\e915";
-    }
-    .IconPlayMini:before {
-      content: "\e903";
     }
   }
   &.mini-enter-active, &.mini-leave-active {

@@ -47,18 +47,6 @@
             font-size: $font-size-medium;
             color: $color-text-d;
           }
-          .IconClear:before {
-            content: "\e907";
-          }
-        }
-        .IconLoop:before {
-          content: "\e90e";
-        }
-        .IconSequence:before {
-          content: "\e90f";
-        }
-        .IconRandom:before {
-          content: "\e910";
         }
       }
     }
@@ -91,12 +79,6 @@
           .IconFavorite {
             color: $color-sub-theme;
           }
-          .IconFavorite:before {
-            content: "\e909";
-          }
-          .IconNotFavorite:before {
-            content: "\e90a";
-          }
         }
         .delete {
           @include extend-click();
@@ -105,12 +87,6 @@
           &.disable {
             color: $color-theme-d;
           }
-          .IconDelete:before {
-            content: "\e908";
-          }
-        }
-        .IconPlay:before {
-          content: "\e90c";
         }
       }
     }
@@ -127,9 +103,6 @@
         .IconAdd {
           margin-right: 5px;
           font-size: $font-size-small-s;
-        }
-        .IconAdd:before {
-          content: "\e902";
         }
         .text {
           font-size: $font-size-small;
