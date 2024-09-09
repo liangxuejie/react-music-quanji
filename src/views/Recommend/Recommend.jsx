@@ -5,6 +5,7 @@ import useMountedState from '@/hooks/useMountedState'
 import ROUTES from '@/constants/routes'
 import Slider from '@/base/Slider/Slider'
 import Scroll from '@/base/Scroll/Scroll'
+import Loading from '@/base/Loading/Loading'
 import storage from 'good-storage'
 import { ALBUM_KEY } from '@/assets/js/constant'
 import styles from './style.module.scss'
@@ -86,6 +87,9 @@ const Recommend = () => {
             </Routes>
           </Suspense>
         </div>
+      )}
+      {loading && (
+        <Loading></Loading>
       )}
     </>
   )

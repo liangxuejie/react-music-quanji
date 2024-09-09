@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useState, useEffect, useMemo, useRef, useContext } from 'react'
 import SongList from '@/base/SongList/SongList'
 import Scroll from '@/base/Scroll/Scroll'
+import Loading from '@/base/Loading/Loading'
 import { PlayMusicDispatchContext, ACTIONS } from '@/reducers/playMusic'
 import styles from './style.module.scss'
 
@@ -14,16 +15,6 @@ const MusicList = ({title, songs, pic, loading, rank}) => {
   const [scrollY, setScrollY] = useState(0)
   const playDispath = useContext(PlayMusicDispatchContext)
   
-  // 方便开发页面
-  // useEffect(() => {
-  //   playDispath({
-  //     type: ACTIONS.SELECT_PLAY,
-  //     payload: {
-  //       list: songs,
-  //       index: 1,
-  //     },
-  //   })
-  // }, [songs])
   useEffect(() => {
     imageHeight.current = bgImageRef.current.clientHeight
     maxTranslateY.current = imageHeight.current - RESERVED_HEIGHT 
@@ -124,13 +115,12 @@ const MusicList = ({title, songs, pic, loading, rank}) => {
           <i className={styles.iconBack}></i>
         </div>
       </div>
-      { !loading && (
+      {!loading && (
         <Scroll
           classNameP={styles.list}
           styleP={scrollStyle}
           probeType={3}
           onScroll={onScroll}
-          // v-loading="props.loading"
           // v-no-result:[props.noResultText]="noResult"
         >
           <div className={styles.songListWrapper}>
@@ -141,6 +131,11 @@ const MusicList = ({title, songs, pic, loading, rank}) => {
             ></SongList>
           </div>
         </Scroll>
+      )}
+      {loading && (
+        <div className={styles.loadingWrap}>
+          <Loading></Loading>
+        </div>
       )}
     </div>
   )
