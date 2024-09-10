@@ -9,6 +9,7 @@ import storage from 'good-storage'
 import { SINGER_KEY } from '@/assets/js/constant'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import ROUTES from '@/constants/routes'
+import Loading from '@/base/Loading/Loading'
 
 const SingerDetail = lazy(() => import('@/views/SingerDetail/SingerDetail'))
 const Singer = () => {
@@ -88,67 +89,76 @@ const Singer = () => {
   }
 
   return (
-    <div className={styles.singer}>
-      <Scroll 
-        classNameP={styles.indexList}
-        probeType={3}
-        onScroll={onScroll}
-        ref={(ref) => (scrollRef.current = ref)}
-      >
-        <ul ref={(ref) => (groupRef.current = ref)}>
-          {singerList?.map((group) => {
-            return (
-              <li 
-              className={styles.group}
-              key={group.title}
-              >
-                <h2 className={styles.title}>{group.title}</h2>
-                <ul>
-                  {group.list?.map((item) => {
-                    return (
-                      <li 
-                      className={styles.item}
-                      key={item.id}
-                      onClick={() => selectSinger(item)}
-                      >
-                        <img className={styles.avatar} src={item.pic}></img>
-                        <span className={styles.name}>{item.name}</span>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </li>
-            )
-          })}
-        </ul>
-        {fixedTitle && (
-          <div className={styles.fixed} style={fixedStyle}>
-            <div className={styles.fixedTitle}>{fixedTitle}</div>
-          </div>
-        )}
-        <div 
-          className={styles.shortcut}
-          onTouchStart={(e) => {onShortcutTouchStart(e)}}
-          onTouchMove={(e) => {onShortcutTouchMove(e)}}
-          onTouchEnd={(e) => {onShortcutTouchEnd(e)}}
-        >
-          <ul>
-            {shortcutList?.map((item, index) => {
-              return (
-                <li key={item} data-index={index} className={currentIndex===index ? cn(styles.item, styles.current) : styles.item}>
-                  {item}
-                </li>
-              )
-            })}
-          </ul>
+    <>
+      {singerList.length > 0 && (
+        <div className={styles.singer}>
+          <Scroll 
+            classNameP={styles.indexList}
+            probeType={3}
+            onScroll={onScroll}
+            ref={(ref) => (scrollRef.current = ref)}
+          >
+            <ul ref={(ref) => (groupRef.current = ref)}>
+              {singerList?.map((group) => {
+                return (
+                  <li 
+                  className={styles.group}
+                  key={group.title}
+                  >
+                    <h2 className={styles.title}>{group.title}</h2>
+                    <ul>
+                      {group.list?.map((item) => {
+                        return (
+                          <li 
+                          className={styles.item}
+                          key={item.id}
+                          onClick={() => selectSinger(item)}
+                          >
+                            <img className={styles.avatar} src={item.pic}></img>
+                            <span className={styles.name}>{item.name}</span>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </li>
+                )
+              })}
+            </ul>
+            {fixedTitle && (
+              <div className={styles.fixed} style={fixedStyle}>
+                <div className={styles.fixedTitle}>{fixedTitle}</div>
+              </div>
+            )}
+            <div 
+              className={styles.shortcut}
+              onTouchStart={(e) => {onShortcutTouchStart(e)}}
+              onTouchMove={(e) => {onShortcutTouchMove(e)}}
+              onTouchEnd={(e) => {onShortcutTouchEnd(e)}}
+            >
+              <ul>
+                {shortcutList?.map((item, index) => {
+                  return (
+                    <li key={item} data-index={index} className={currentIndex===index ? cn(styles.item, styles.current) : styles.item}>
+                      {item}
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          </Scroll>
+          <Suspense fallback={null}>
+            <Routes>
+              <Route path=":id" element={<SingerDetail/>} />
+            </Routes>
+          </Suspense>
         </div>
-      </Scroll>
-      <Suspense fallback={null}>
-        <Routes>
-          <Route path=":id" element={<SingerDetail/>} />
-        </Routes>
-      </Suspense>
-    </div>
+      )}
+      {singerList.length <= 0 && (
+        <Loading></Loading>
+      )}
+    </>
+
+
   )
 }
 
