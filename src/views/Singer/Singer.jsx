@@ -53,8 +53,6 @@ const Singer = () => {
   }, [scrollY, currentIndex])
 
   function onScroll(pos) {
-    console.log('-pos.y', -pos.y)
-    return
     const newY = -pos.y
     setScrollY(newY)
     const listHeightsVal = listHeights.current

@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 
 export default function useShortcut(singerList, groupRef, scrollRef) {
   const ANCHOR_HEIGHT = 18
-  const touch = {}
+  const touch = useRef({})
 
   const shortcutList = useMemo(() => {
     return singerList?.map((group) => {
