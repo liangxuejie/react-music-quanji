@@ -292,7 +292,6 @@
       }
 
       function ready() {
-        console.log('ready')
         if (songReady.value) {
           return
         }

@@ -1,11 +1,16 @@
 import styles from './style.module.scss'
-import { useState, useEffect, useMemo, useRef } from 'react'
+import { useState, useEffect, useMemo, useRef, lazy, Suspense } from 'react'
 import { getSingerList } from '@/service/singer'
 import useMountedState from '@/hooks/useMountedState'
 import Scroll from '@/base/Scroll/Scroll'
 import cn from 'classnames'
 import useShortcut from './useShortcut'
+import storage from 'good-storage'
+import { SINGER_KEY } from '@/assets/js/constant'
+import { Routes, Route, useNavigate } from 'react-router-dom'
+import ROUTES from '@/constants/routes'
 
+const SingerDetail = lazy(() => import('@/views/SingerDetail/SingerDetail'))
 const Singer = () => {
   const TITLE_HEIGHT = 30
   const [singerList, setSingerList] = useState([])
@@ -18,6 +23,7 @@ const Singer = () => {
   const groupRef = useRef(null)
   const listHeights = useRef(null)
   const { shortcutList, onShortcutTouchStart, onShortcutTouchMove, onShortcutTouchEnd } = useShortcut(singerList, groupRef, scrollRef, setCurrentIndex)
+  const navigate = useNavigate()
 
   useEffect(() => {
     async function fetchData() {
@@ -43,7 +49,6 @@ const Singer = () => {
     }
     listHeights.current = listHeightsVal
   }, [singerList])
-
   const fixedTitle = useMemo(() => {
     if (scrollY < 0) {
       return ''
@@ -74,11 +79,14 @@ const Singer = () => {
       transform: `translate3d(0,${diff}px,0)`
     })
   }
-  function onItemClick(item) {
-    // emit('select', item)
+  function selectSinger(singer) {
+    cacheSinger(singer)
+    navigate(`${ROUTES.SINGER}/${singer.id}`, {state: { selectedSinger: singer}})
+  }
+  function cacheSinger(singer) {
+    storage.session.set(SINGER_KEY, singer)
   }
 
-  console.log('render')
   return (
     <div className={styles.singer}>
       <Scroll 
@@ -101,7 +109,7 @@ const Singer = () => {
                       <li 
                       className={styles.item}
                       key={item.id}
-                      onClick={() => onItemClick(item)}
+                      onClick={() => selectSinger(item)}
                       >
                         <img className={styles.avatar} src={item.pic}></img>
                         <span className={styles.name}>{item.name}</span>
@@ -135,6 +143,11 @@ const Singer = () => {
           </ul>
         </div>
       </Scroll>
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path=":id" element={<SingerDetail/>} />
+        </Routes>
+      </Suspense>
     </div>
   )
 }

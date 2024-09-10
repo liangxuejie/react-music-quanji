@@ -56,7 +56,7 @@ function App() {
           <Suspense fallback={null}>
             <Routes>
               <Route path={`${ROUTES.RECOMMEND}/*`} element={<Recommend/>} />
-              <Route path={ROUTES.SINGER} element={<Singer/>} />
+              <Route path={`${ROUTES.SINGER}/*`} element={<Singer/>} />
               <Route path={ROUTES.TOPLIST} element={<TopList/>} />
               <Route path={ROUTES.SEARCH} element={<Search/>} />
               <Route path={ROUTES.USERCENTER} element={<UserCenter/>} />
