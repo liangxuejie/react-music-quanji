@@ -3,6 +3,8 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 import { getSingerList } from '@/service/singer'
 import useMountedState from '@/hooks/useMountedState'
 import Scroll from '@/base/Scroll/Scroll'
+import cn from 'classnames'
+import useShortcut from './useShortcut'
 
 const Singer = () => {
   const TITLE_HEIGHT = 30
@@ -15,7 +17,7 @@ const Singer = () => {
   const scrollRef = useRef(null)
   const groupRef = useRef(null)
   const listHeights = useRef(null)
-
+  const { shortcutList, onShortcutTouchStart, onShortcutTouchMove, onShortcutTouchEnd } = useShortcut(singerList, groupRef, scrollRef, setCurrentIndex)
 
   useEffect(() => {
     async function fetchData() {
@@ -49,13 +51,10 @@ const Singer = () => {
     const currentGroup = singerList[currentIndex]
     return currentGroup ? currentGroup.title : ''
   }, [scrollY, currentIndex])
-  const shortcutList = useMemo(() => {
-    return singerList?.map((group) => {
-      return group.title
-    })
-  }, [singerList])
 
   function onScroll(pos) {
+    console.log('-pos.y', -pos.y)
+    return
     const newY = -pos.y
     setScrollY(newY)
     const listHeightsVal = listHeights.current
@@ -81,11 +80,12 @@ const Singer = () => {
     // emit('select', item)
   }
 
+  console.log('render')
   return (
     <div className={styles.singer}>
       <Scroll 
         classNameP={styles.indexList}
-        probeType='3'
+        probeType={3}
         onScroll={onScroll}
         ref={(ref) => (scrollRef.current = ref)}
       >
@@ -122,18 +122,14 @@ const Singer = () => {
         )}
         <div 
           className={styles.shortcut}
-          // @touchstart.stop.prevent="onShortcutTouchStart"
-          // @touchmove.stop.prevent="onShortcutTouchMove"
-          // @touchend.stop.prevent
+          onTouchStart={(e) => {onShortcutTouchStart(e)}}
+          onTouchMove={(e) => {onShortcutTouchMove(e)}}
+          onTouchEnd={(e) => {onShortcutTouchEnd(e)}}
         >
           <ul>
             {shortcutList?.map((item, index) => {
               return (
-                <li 
-                className={styles.item}
-                key={item}
-                // :class="{'current':currentIndex===index}">
-                >
+                <li key={item} data-index={index} className={currentIndex===index ? cn(styles.item, styles.current) : styles.item}>
                   {item}
                 </li>
               )
