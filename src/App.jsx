@@ -57,7 +57,7 @@ function App() {
             <Routes>
               <Route path={`${ROUTES.RECOMMEND}/*`} element={<Recommend/>} />
               <Route path={`${ROUTES.SINGER}/*`} element={<Singer/>} />
-              <Route path={ROUTES.TOPLIST} element={<TopList/>} />
+              <Route path={`${ROUTES.TOPLIST}/*`} element={<TopList/>} />
               <Route path={ROUTES.SEARCH} element={<Search/>} />
               <Route path={ROUTES.USERCENTER} element={<UserCenter/>} />
               <Route path={ROUTES.ROOT} element={<Navigate to={ROUTES.DEFAULT_ROUTE} />} />
