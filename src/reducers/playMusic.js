@@ -8,6 +8,7 @@ const ADD_SONG_LYRIC = 'ADD_SONG_LYRIC'
 const CHANGE_MODE = 'CHANGE_MODE'
 const REMOVE_SONG = 'REMOVE_SONG'
 const CLEAR_SONG_LIST = 'CLEAR_SONG_LIST'
+const ADD_SONG = 'ADD_SONG'
 
 const SET_FULL_SCREEN = 'SET_FULL_SCREEN'
 const SET_PLAY_MODE = 'SET_PLAY_MODE'
@@ -23,6 +24,7 @@ export const ACTIONS = {
   CHANGE_MODE,
   REMOVE_SONG,
   CLEAR_SONG_LIST,
+  ADD_SONG,
 
   SET_FULL_SCREEN,
   SET_PLAY_MODE,
@@ -133,6 +135,34 @@ const playMusicReducer = (state, { type, payload }) => {
         sequenceList: [],
         playlist: [],
         currentIndex: 0,
+      }
+    }
+    case ACTIONS.ADD_SONG: {
+      const playlist = state.playlist.slice()
+      const sequenceList = state.sequenceList.slice()
+      let currentIndex = state.currentIndex
+      const song =  payload.song
+      const playIndex = findIndex(playlist, song)
+    
+      if (playIndex > -1) {
+        currentIndex = playIndex
+      } else {
+        playlist.push(song)
+        currentIndex = playlist.length - 1
+      }
+
+      const sequenceIndex = findIndex(sequenceList, song)
+      if (sequenceIndex === -1) {
+        sequenceList.push(song)
+      }
+      
+      return {
+        ...state,
+        sequenceList: sequenceList,
+        playlist: playlist,
+        currentIndex: currentIndex,
+        playingState: true,
+        fullScreen: true,
       }
     }
 
