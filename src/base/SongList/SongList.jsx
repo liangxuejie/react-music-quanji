@@ -1,9 +1,22 @@
 import styles from './style.module.scss'
+import cn from 'classnames'
 
 const SongList = ({songs, rank, selectItem}) => {
 
   function getDesc(song) {
     return `${song.singer}·${song.album}`
+  }
+  function getRankCls(index) {
+    if (index <= 2) {
+      return cn(styles.icon, styles[`icon${index}`])
+    } else {
+      return styles.text
+    }
+  }
+  function getRankText(index) {
+    if (index > 2) {
+      return index + 1
+    }
   }
 
   return (
@@ -17,9 +30,9 @@ const SongList = ({songs, rank, selectItem}) => {
           >
             {rank && (
               <div className={styles.rank}>
-                {/* <div className={getRankCls(index)}>
+                <div className={getRankCls(index)}>
                   { getRankText(index) }
-                </div> */}
+                </div>
               </div>
             )}
             <div className={styles.content}>

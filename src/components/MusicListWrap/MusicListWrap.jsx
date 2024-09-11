@@ -7,7 +7,7 @@ import { processSongs } from '@/service/song'
 import useMountedState from '@/hooks/useMountedState'
 import styles from './style.module.scss'
 
-const MusicListWrap = ({wrapData = {}, storageKey = '', fetch}) => {
+const MusicListWrap = ({wrapData = {}, storageKey = '', fetch, rank}) => {
   const { albumId } = useParams()
   // const matches = useMatches();
   const navigate = useNavigate()
@@ -63,6 +63,7 @@ const MusicListWrap = ({wrapData = {}, storageKey = '', fetch}) => {
         loading={loading}
         title={title}
         pic={pic}
+        rank={rank}
       ></MusicList>
     </div>
   )
