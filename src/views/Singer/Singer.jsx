@@ -1,5 +1,5 @@
 import styles from './style.module.scss'
-import { useState, useEffect, useMemo, useRef, lazy, Suspense } from 'react'
+import { useState, useEffect, useMemo, useRef, useContext, lazy, Suspense } from 'react'
 import { getSingerList } from '@/service/singer'
 import useMountedState from '@/hooks/useMountedState'
 import Scroll from '@/base/Scroll/Scroll'
@@ -10,6 +10,7 @@ import { SINGER_KEY } from '@/assets/js/constant'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import ROUTES from '@/constants/routes'
 import Loading from '@/base/Loading/Loading'
+import { PlayMusicStateContext } from '@/reducers/playMusic'
 
 const SingerDetail = lazy(() => import('@/views/SingerDetail/SingerDetail'))
 const Singer = () => {
@@ -25,6 +26,7 @@ const Singer = () => {
   const listHeights = useRef(null)
   const { shortcutList, onShortcutTouchStart, onShortcutTouchMove, onShortcutTouchEnd } = useShortcut(singerList, groupRef, scrollRef, setCurrentIndex)
   const navigate = useNavigate()
+  const { playlist } = useContext(PlayMusicStateContext)
 
   useEffect(() => {
     async function fetchData() {
@@ -57,6 +59,12 @@ const Singer = () => {
     const currentGroup = singerList[currentIndex]
     return currentGroup ? currentGroup.title : ''
   }, [scrollY, currentIndex])
+  const viewStyle = useMemo(() => {
+    const bottom = playlist.length > 0 ? '60px' : '0'
+    return {
+      bottom
+    }
+  }, [playlist?.length])
 
   function onScroll(pos) {
     const newY = -pos.y
@@ -91,7 +99,7 @@ const Singer = () => {
   return (
     <>
       {singerList.length > 0 && (
-        <div className={styles.singer}>
+        <div className={styles.singer} style={viewStyle}>
           <Scroll 
             classNameP={styles.indexList}
             probeType={3}

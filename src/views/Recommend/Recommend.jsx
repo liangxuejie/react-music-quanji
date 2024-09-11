@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, lazy, Suspense } from 'react'
+import { useState, useEffect, useMemo, useContext, lazy, Suspense } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import { getRecommend } from '@/service/recommend'
 import useMountedState from '@/hooks/useMountedState'
@@ -9,6 +9,7 @@ import Loading from '@/base/Loading/Loading'
 import storage from 'good-storage'
 import { ALBUM_KEY } from '@/assets/js/constant'
 import styles from './style.module.scss'
+import { PlayMusicStateContext } from '@/reducers/playMusic'
 
 const Album = lazy(() => import('@/views/Album/Album'))
 const Recommend = () => {
@@ -16,6 +17,7 @@ const Recommend = () => {
   const navigate = useNavigate()
   const [sliders, setSliders] = useState(null)
   const [albums, setAlbums] = useState(null)
+  const { playlist } = useContext(PlayMusicStateContext)
 
   useEffect(() => {
     async function fetchData() {
@@ -30,6 +32,13 @@ const Recommend = () => {
   const loading = useMemo(() => {
     return !sliders?.length && !albums?.length
   }, [sliders?.length, albums?.length])
+  const viewStyle = useMemo(() => {
+    const bottom = playlist.length > 0 ? '60px' : '0'
+    return {
+      bottom
+    }
+  }, [playlist?.length])
+
   function selectItem(album) {
     cacheAlbum(album)
     navigate(`${ROUTES.RECOMMEND}/${album.id}`, {state: { selectedData: album}})
@@ -41,7 +50,7 @@ const Recommend = () => {
   return (
     <>
       {!loading && (
-        <div className={styles.recommend}>
+        <div className={styles.recommend} style={viewStyle}>
           <Scroll classNameP={styles.recommendContent}>
             <div>
               <div className={styles.sliderWrapper}>

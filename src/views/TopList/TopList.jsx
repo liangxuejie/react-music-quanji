@@ -1,5 +1,5 @@
 import styles from './style.module.scss'
-import { useState, useEffect, useMemo, useRef, lazy, Suspense } from 'react'
+import { useState, useEffect, useMemo, useRef, useContext, lazy, Suspense } from 'react'
 import { getTopList } from '@/service/topList'
 import useMountedState from '@/hooks/useMountedState'
 import Loading from '@/base/Loading/Loading'
@@ -8,6 +8,7 @@ import storage from 'good-storage'
 import { TOP_KEY } from '@/assets/js/constant'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import ROUTES from '@/constants/routes'
+import { PlayMusicStateContext } from '@/reducers/playMusic'
 
 const TopDetail = lazy(() => import('@/views/TopDetail/TopDetail'))
 const TopList = () => {
@@ -15,6 +16,7 @@ const TopList = () => {
   const [topList, setTopList] = useState([])
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
+  const { playlist } = useContext(PlayMusicStateContext)
 
   useEffect(() => {
     async function fetchData() {
@@ -26,6 +28,13 @@ const TopList = () => {
     }
     fetchData();
   }, [])
+  const viewStyle = useMemo(() => {
+    const bottom = playlist.length > 0 ? '60px' : '0'
+    return {
+      bottom
+    }
+  }, [playlist?.length])
+
   function selectItem(item) {
     cacheSinger(item)
     navigate(`${ROUTES.TOPLIST}/${item.id}`, {state: { selectedData: item}})
@@ -37,7 +46,7 @@ const TopList = () => {
   return (
     <>
       {!loading && (
-        <div className={styles.topList}>
+        <div className={styles.topList} style={viewStyle}>
           <Scroll classNameP={styles.topListContent}>
             <ul>
               {topList?.map((item) => {
