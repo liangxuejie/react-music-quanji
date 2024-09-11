@@ -5,7 +5,6 @@ import { useParams, useMatches, useNavigate } from 'react-router-dom'
 import ROUTES from '@/constants/routes'
 import { processSongs } from '@/service/song'
 import useMountedState from '@/hooks/useMountedState'
-import styles from './style.module.scss'
 
 const MusicListWrap = ({wrapData = {}, storageKey = '', fetch, rank}) => {
   const { albumId } = useParams()
@@ -57,7 +56,7 @@ const MusicListWrap = ({wrapData = {}, storageKey = '', fetch, rank}) => {
   }, [fetch])
 
   return (
-    <div className={styles.musicListWarp}>
+    <>
       <MusicList
         songs={songsList}
         loading={loading}
@@ -65,7 +64,7 @@ const MusicListWrap = ({wrapData = {}, storageKey = '', fetch, rank}) => {
         pic={pic}
         rank={rank}
       ></MusicList>
-    </div>
+    </>
   )
 }
 

@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo, useRef, useContext } from 'react'
 import SongList from '@/base/SongList/SongList'
 import Scroll from '@/base/Scroll/Scroll'
 import Loading from '@/base/Loading/Loading'
-import { PlayMusicDispatchContext, ACTIONS } from '@/reducers/playMusic'
+import { PlayMusicDispatchContext, PlayMusicStateContext, ACTIONS } from '@/reducers/playMusic'
 import styles from './style.module.scss'
 
 const RESERVED_HEIGHT = 40
@@ -14,6 +14,7 @@ const MusicList = ({title, songs, pic, loading, rank}) => {
   const maxTranslateY = useRef(0)
   const [scrollY, setScrollY] = useState(0)
   const playDispath = useContext(PlayMusicDispatchContext)
+  const { playlist } = useContext(PlayMusicStateContext)
   
   useEffect(() => {
     imageHeight.current = bgImageRef.current.clientHeight
@@ -64,13 +65,12 @@ const MusicList = ({title, songs, pic, loading, rank}) => {
     }
   }, [scrollY, maxTranslateY.current, imageHeight.current])
   const scrollStyle = useMemo(() => {
-    // const bottom = this.playlist.length ? '60px' : '0'
-    const bottom = '0'
+    const bottom = playlist.length > 0 ? '60px' : '0'
     return {
       top: `${imageHeight.current}px`,
       bottom
     }
-  }, [imageHeight.current])
+  }, [playlist?.length, imageHeight.current])
 
   function goBack() {
     navigate(-1)
