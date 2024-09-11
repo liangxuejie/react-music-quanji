@@ -1,0 +1,32 @@
+.switches {
+  display: flex;
+  position: relative;
+  align-items: center;
+  width: 240px;
+  margin: 0 auto;
+  border: 1px solid $color-highlight-background;
+  border-radius: 5px;
+  .switchItem {
+    position: relative;
+    z-index: 10;
+    flex: 1;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: $font-size-medium;
+    color: $color-text-d;
+    &.active {
+      color: $color-text
+    }
+  }
+  .activeBar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 120px;
+    height: 30px;
+    transition: transform 0.3s;
+    border-radius: 5px;
+    background: $color-highlight-background;
+  }
+}

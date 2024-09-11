@@ -1,6 +1,58 @@
-.header {
-  height: 44px;
-  text-align: center;
-  color: #fff;
-  font-size: 36px;
+.userCenter {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  width: 100%;
+  background: $color-background;
+  .back {
+    position: absolute;
+    top: 0;
+    left: 6px;
+    z-index: 50;
+    .IconBack {
+      display: block;
+      padding: 10px;
+      font-size: $font-size-large-x;
+      color: $color-theme;
+    }
+  }
+  .switchesWrapper {
+    margin: 10px 0 30px 0;
+  }
+  .playBtn {
+    box-sizing: border-box;
+    width: 135px;
+    padding: 7px 0;
+    margin: 0 auto;
+    text-align: center;
+    border: 1px solid $color-text-l;
+    color: $color-text-l;
+    border-radius: 100px;
+    font-size: 0;
+    .IconPlay {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 6px;
+      font-size: $font-size-medium-x;
+    }
+    .text {
+      display: inline-block;
+      vertical-align: middle;
+      font-size: $font-size-small;
+    }
+  }
+  .listWrapper {
+    position: absolute;
+    top: 110px;
+    bottom: 0;
+    width: 100%;
+    .listScroll {
+      height: 100%;
+      overflow: hidden;
+      .listInner {
+        padding: 20px 30px;
+      }
+    }
+  }
 }
