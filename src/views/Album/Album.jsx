@@ -9,7 +9,7 @@ const Album = () => {
   return (
     <div className={styles.album}>
       <MusicListWrap
-            wrapData={location.state?.selectedAlbum}
+            wrapData={location.state?.selectedData}
             storageKey={ALBUM_KEY}
             fetch={getAlbum}
       ></MusicListWrap>

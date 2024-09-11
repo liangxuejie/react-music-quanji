@@ -32,7 +32,7 @@ const Recommend = () => {
   }, [sliders?.length, albums?.length])
   function selectItem(album) {
     cacheAlbum(album)
-    navigate(`${ROUTES.RECOMMEND}/${album.id}`, {state: { selectedAlbum: album}})
+    navigate(`${ROUTES.RECOMMEND}/${album.id}`, {state: { selectedData: album}})
   }
   function cacheAlbum(album) {
     storage.session.set(ALBUM_KEY, album)

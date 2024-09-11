@@ -82,7 +82,7 @@ const Singer = () => {
   }
   function selectSinger(singer) {
     cacheSinger(singer)
-    navigate(`${ROUTES.SINGER}/${singer.id}`, {state: { selectedSinger: singer}})
+    navigate(`${ROUTES.SINGER}/${singer.id}`, {state: { selectedData: singer}})
   }
   function cacheSinger(singer) {
     storage.session.set(SINGER_KEY, singer)

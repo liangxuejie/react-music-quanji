@@ -46,7 +46,7 @@ const MusicListWrap = ({wrapData = {}, storageKey = '', fetch}) => {
         return
     }
     async function fetchData() {
-      const result = await fetch(data.id)
+      const result = await fetch(data)
       const songs = await processSongs(result.songs)
       if (isMounted()) {
         setSongsList(songs)
